@@ -48,4 +48,26 @@ in the array, or -1 if it is not present.
 **Example**  
 ```js
 var indexOf = require('index-of-x');
+var subject = [2, 3, undefined, true, 'hej', null, 2, false, 0, -0, NaN];
+
+// Standard mode, operates just like `Array.prototype.indexOf`.
+indexOf(subject, null); // 5
+indexOf(testSubject, '2'); // -1
+indexOf(testSubject, NaN); // -1
+indexOf(testSubject, -0); // 8
+indexOf(testSubject, 2, 2); //6
+
+// `SameValueZero` mode extends `indexOf` to match `NaN`.
+indexOf(subject, null, 'SameValueZero'); // 5
+indexOf(testSubject, '2', 'SameValueZero'); // -1
+indexOf(testSubject, NaN, 'SameValueZero'); // 10
+indexOf(testSubject, -0, 'SameValueZero'); // 8
+indexOf(testSubject, 2, 2, 'SameValueZero'); //6
+
+// `SameValue` mode extends `indexOf` to match `NaN` and signed `0`.
+indexOf(subject, null, 'SameValueZero'); // 5
+indexOf(testSubject, '2', 'SameValueZero'); // -1
+indexOf(testSubject, NaN, 'SameValueZero'); // 10
+indexOf(testSubject, -0, 'SameValueZero'); // 9
+indexOf(testSubject, 2, 2, 'SameValueZero'); //6
 ```
