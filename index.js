@@ -105,11 +105,11 @@
    * indexOf(testSubject, 2, 2, 'SameValueZero'); //6
    *
    * // `SameValue` mode extends `indexOf` to match `NaN` and signed `0`.
-   * indexOf(subject, null, 'SameValueZero'); // 5
-   * indexOf(testSubject, '2', 'SameValueZero'); // -1
-   * indexOf(testSubject, NaN, 'SameValueZero'); // 10
-   * indexOf(testSubject, -0, 'SameValueZero'); // 9
-   * indexOf(testSubject, 2, 2, 'SameValueZero'); //6
+   * indexOf(subject, null, 'SameValue'); // 5
+   * indexOf(testSubject, '2', 'SameValue'); // -1
+   * indexOf(testSubject, NaN, 'SameValue'); // 10
+   * indexOf(testSubject, -0, 'SameValue'); // 9
+   * indexOf(testSubject, 2, 2, 'SameValue'); //6
    */
   module.exports = function (array, searchElement) {
     var object = ES.ToObject(array),
