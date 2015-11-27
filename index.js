@@ -21,7 +21,7 @@
  * </a>
  *
  * An extended ES6 indexOf module.
- * @version 1.0.0
+ * @version 1.0.1
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -33,8 +33,8 @@
 /*jshint bitwise:true, camelcase:true, curly:true, eqeqeq:true, forin:true,
   freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
   nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
-  es3:true, esnext:true, plusplus:true, maxparams:4, maxdepth:3,
-  maxstatements:25, maxcomplexity:13 */
+  es3:true, esnext:true, plusplus:true, maxparams:4, maxdepth:4,
+  maxstatements:26, maxcomplexity:15 */
 
 /*global require, module */
 
@@ -44,7 +44,8 @@
   var ES = require('es-abstract/es6'),
     isString = require('is-string'),
     findIndex = require('find-index-x'),
-    pIndexOf = Array.prototype.indexOf;
+    pIndexOf = Array.prototype.indexOf,
+    pSlice = Array.prototype.slice;
   /**
    * This method returns an index in the array, if an element in the array
    * satisfies the provided testing function. Otherwise -1 is returned.
@@ -118,12 +119,11 @@
     if (!length) {
       return -1;
     }
-    fromIndex = arguments[2];
-    if (arguments.length > 3) {
-      extend = String(arguments[3]);
-    } else if (arguments.length > 2) {
-      if (isString(fromIndex)) {
-        extend = String(fromIndex);
+    if (arguments.length > 2) {
+      if (arguments.length > 3) {
+        extend = arguments[3];
+      } else if (isString(arguments[2])) {
+        extend = String(arguments[2]);
       }
     }
     if (extend === 'SameValue') {
@@ -131,16 +131,20 @@
     } else if (extend === 'SameValueZero') {
       extendFn = ES.SameValueZero;
     }
-    fromIndex = ES.ToInteger(fromIndex);
-    if (fromIndex < length) {
-      if (fromIndex < 0) {
-        fromIndex = length - Math.abs(fromIndex);
+    if (extendFn && (searchElement === 0 || searchElement !== searchElement)) {
+      if (arguments.length > 2) {
+        fromIndex = ES.ToInteger(arguments[2]);
+      } else {
+        fromIndex = 0;
+      }
+      if (fromIndex < length) {
         if (fromIndex < 0) {
-          fromIndex = 0;
+          fromIndex = length - Math.abs(fromIndex);
+          if (fromIndex < 0) {
+            fromIndex = 0;
+          }
         }
       }
-    }
-    if (extendFn && (searchElement === 0 || searchElement !== searchElement)) {
       if (fromIndex > 0) {
         return findIndexFrom(object, searchElement, fromIndex, extendFn);
       }
@@ -148,6 +152,6 @@
         return index in object && extendFn(searchElement, element);
       });
     }
-    return pIndexOf.call(object, searchElement, fromIndex);
+    return pIndexOf.apply(object, pSlice.call(arguments, 1));
   };
 }());
