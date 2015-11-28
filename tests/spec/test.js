@@ -4,7 +4,7 @@
   freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
   nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
   es3:true, esnext:true, plusplus:true, maxparams:3, maxdepth:1,
-  maxstatements:12, maxcomplexity:4 */
+  maxstatements:13, maxcomplexity:4 */
 
 /*global expect, module, require, describe, it, xit,  beforeEach,
   returnExports */
@@ -106,6 +106,19 @@
 
     it('should work with fromIndex being negative and greater than the length', function () {
       expect(indexOf(testSubject, 'hej', -20)).toBe(4);
+    });
+
+    it('should work with object items', function () {
+      var a = [],
+        b = {},
+        c = new Date(),
+        arr = [a, b ,c];
+      expect(indexOf(arr, a)).toBe(0);
+      expect(indexOf(arr, b)).toBe(1);
+      expect(indexOf(arr, c)).toBe(2);
+      expect(indexOf(arr, [])).toBe(-1);
+      expect(indexOf(arr, {})).toBe(-1);
+      expect(indexOf(arr, new Date())).toBe(-1);
     });
 
     describe('Array-like', function ArrayLike() {
@@ -262,6 +275,19 @@
       expect(indexOf(testSubject, 'hej', -20, 'SameValueZero')).toBe(4);
     });
 
+    it('should work with object items', function () {
+      var a = [],
+        b = {},
+        c = new Date(),
+        arr = [a, b ,c];
+      expect(indexOf(arr, a, 'SameValueZero')).toBe(0);
+      expect(indexOf(arr, b, 'SameValueZero')).toBe(1);
+      expect(indexOf(arr, c, 'SameValueZero')).toBe(2);
+      expect(indexOf(arr, [], 'SameValueZero')).toBe(-1);
+      expect(indexOf(arr, {}, 'SameValueZero')).toBe(-1);
+      expect(indexOf(arr, new Date(), 'SameValueZero')).toBe(-1);
+    });
+
     describe('Array-like', function ArrayLike() {
       var testAL;
 
@@ -414,6 +440,19 @@
 
     it('should work with fromIndex being negative and greater than the length', function () {
       expect(indexOf(testSubject, 'hej', -20, 'SameValue')).toBe(4);
+    });
+
+    it('should work with object items', function () {
+      var a = [],
+        b = {},
+        c = new Date(),
+        arr = [a, b ,c];
+      expect(indexOf(arr, a, 'SameValue')).toBe(0);
+      expect(indexOf(arr, b, 'SameValue')).toBe(1);
+      expect(indexOf(arr, c, 'SameValue')).toBe(2);
+      expect(indexOf(arr, [], 'SameValue')).toBe(-1);
+      expect(indexOf(arr, {}, 'SameValue')).toBe(-1);
+      expect(indexOf(arr, new Date(), 'SameValue')).toBe(-1);
     });
 
     describe('Array-like', function ArrayLike() {
