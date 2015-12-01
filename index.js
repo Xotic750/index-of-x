@@ -21,7 +21,7 @@
  * </a>
  *
  * An extended ES6 indexOf module.
- * @version 1.0.3
+ * @version 1.0.4
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -41,11 +41,14 @@
 ;(function () {
   'use strict';
 
-  var ES = require('es-abstract/es6'),
-    isString = require('is-string'),
-    findIndex = require('find-index-x'),
+  var pCharAt = String.prototype.charAt,
     pIndexOf = Array.prototype.indexOf,
-    pSlice = Array.prototype.slice;
+    pSlice = Array.prototype.slice,
+    $abs = Math.abs,
+    ES = require('es-abstract/es6'),
+    isString = require('is-string'),
+    findIndex = require('find-index-x');
+
   /**
    * This method returns an index in the array, if an element in the array
    * satisfies the provided testing function. Otherwise -1 is returned.
@@ -62,7 +65,9 @@
       length = ES.ToLength(object.length),
       element;
     while (fromIndex < length) {
-      element = isStr ? object.charAt(fromIndex) : object[fromIndex];
+      element = isStr ?
+        ES.Call(pCharAt, object, [fromIndex]) :
+        object[fromIndex];
       if (fromIndex in object && extendFn(element, searchElement)) {
         return fromIndex;
       }
@@ -112,7 +117,7 @@
    * indexOf(testSubject, -0, 'SameValue'); // 9
    * indexOf(testSubject, 2, 2, 'SameValue'); //6
    */
-  module.exports = function (array, searchElement) {
+  module.exports = function indexOf(array, searchElement) {
     var object = ES.ToObject(array),
       length = ES.ToLength(object.length),
       fromIndex, extend, extendFn;
@@ -135,7 +140,7 @@
       fromIndex = ES.ToInteger(arguments[2]);
       if (fromIndex < length) {
         if (fromIndex < 0) {
-          fromIndex = length - Math.abs(fromIndex);
+          fromIndex = length - $abs(fromIndex);
           if (fromIndex < 0) {
             fromIndex = 0;
           }
@@ -148,6 +153,6 @@
         return index in object && extendFn(searchElement, element);
       });
     }
-    return pIndexOf.apply(object, pSlice.call(arguments, 1));
+    return ES.Call(pIndexOf, object, ES.Call(pSlice, arguments, [1]));
   };
 }());
