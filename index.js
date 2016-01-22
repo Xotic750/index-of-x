@@ -39,7 +39,7 @@
  * `es6.shim.js` provides compatibility shims so that legacy JavaScript engines
  * behave as closely as possible to ECMAScript 6 (Harmony).
  *
- * @version 1.0.8
+ * @version 1.0.9
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -52,20 +52,24 @@
   freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
   nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
   es3:true, esnext:true, plusplus:true, maxparams:4, maxdepth:4,
-  maxstatements:26, maxcomplexity:15 */
+  maxstatements:24, maxcomplexity:13 */
 
 /*global require, module */
 
 ;(function () {
   'use strict';
 
-  var pCharAt = String.prototype.charAt,
-    pIndexOf = Array.prototype.indexOf,
-    pSlice = Array.prototype.slice,
-    $abs = Math.abs,
-    ES = require('es-abstract/es6'),
-    isString = require('is-string'),
-    findIndex = require('find-index-x');
+  var pCharAt = String.prototype.charAt;
+  var pIndexOf = Array.prototype.indexOf;
+  var pSlice = Array.prototype.slice;
+  var pfindIndex = Array.prototype.findIndex;
+  var $abs = Math.abs;
+  var $isNaN = Number.isNaN;
+  var isString = require('is-string');
+  var toInteger = require('to-integer-x');
+  var toObject = require('to-object-x');
+  var toLength = require('to-length-x');
+  var sameValueZero = require('same-value-zero-x');
 
   /**
    * This method returns an index in the array, if an element in the array
@@ -79,13 +83,10 @@
    * @return {number} Returns index of found element, otherwise -1.
    */
   function findIndexFrom(object, searchElement, fromIndex, extendFn) {
-    var isStr = isString(object),
-      length = ES.ToLength(object.length),
-      element;
+    var isStr = isString(object);
+    var length = toLength(object.length);
     while (fromIndex < length) {
-      element = isStr ?
-        ES.Call(pCharAt, object, [fromIndex]) :
-        object[fromIndex];
+      var element = isStr ? pCharAt.call(object, fromIndex) : object[fromIndex];
       if (fromIndex in object && extendFn(element, searchElement)) {
         return fromIndex;
       }
@@ -136,12 +137,12 @@
    * indexOf(testSubject, 2, 2, 'SameValue'); //6
    */
   module.exports = function indexOf(array, searchElement) {
-    var object = ES.ToObject(array),
-      length = ES.ToLength(object.length),
-      fromIndex, extend, extendFn;
+    var object = toObject(array);
+    var length = toLength(object.length);
     if (!length) {
       return -1;
     }
+    var extend;
     if (arguments.length > 2) {
       if (arguments.length > 3) {
         extend = arguments[3];
@@ -149,13 +150,14 @@
         extend = String(arguments[2]);
       }
     }
+    var extendFn;
     if (extend === 'SameValue') {
-      extendFn = ES.SameValue;
+      extendFn = Object.is;
     } else if (extend === 'SameValueZero') {
-      extendFn = ES.SameValueZero;
+      extendFn = sameValueZero;
     }
-    if (extendFn && (searchElement === 0 || searchElement !== searchElement)) {
-      fromIndex = ES.ToInteger(arguments[2]);
+    if (extendFn && (searchElement === 0 || $isNaN(searchElement))) {
+      var fromIndex = toInteger(arguments[2]);
       if (fromIndex < length) {
         if (fromIndex < 0) {
           fromIndex = length - $abs(fromIndex);
@@ -167,10 +169,10 @@
       if (fromIndex > 0) {
         return findIndexFrom(object, searchElement, fromIndex, extendFn);
       }
-      return findIndex(object, function (element, index) {
+      return pfindIndex.call(object, function (element, index) {
         return index in object && extendFn(searchElement, element);
       });
     }
-    return ES.Call(pIndexOf, object, ES.Call(pSlice, arguments, [1]));
+    return pIndexOf.apply(object, pSlice.call(arguments, 1));
   };
 }());
