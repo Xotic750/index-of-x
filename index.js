@@ -39,7 +39,7 @@
  * `es6.shim.js` provides compatibility shims so that legacy JavaScript engines
  * behave as closely as possible to ECMAScript 6 (Harmony).
  *
- * @version 1.0.9
+ * @version 1.0.10
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -70,6 +70,8 @@
   var toObject = require('to-object-x');
   var toLength = require('to-length-x');
   var sameValueZero = require('same-value-zero-x');
+  var safeToString = require('safe-to-string-x');
+  var sameValue = Object.is;
 
   /**
    * This method returns an index in the array, if an element in the array
@@ -147,12 +149,12 @@
       if (arguments.length > 3) {
         extend = arguments[3];
       } else if (isString(arguments[2])) {
-        extend = String(arguments[2]);
+        extend = safeToString(arguments[2]);
       }
     }
     var extendFn;
     if (extend === 'SameValue') {
-      extendFn = Object.is;
+      extendFn = sameValue;
     } else if (extend === 'SameValueZero') {
       extendFn = sameValueZero;
     }
