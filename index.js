@@ -39,7 +39,7 @@
  * `es6.shim.js` provides compatibility shims so that legacy JavaScript engines
  * behave as closely as possible to ECMAScript 6 (Harmony).
  *
- * @version 1.0.10
+ * @version 1.0.11
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -52,7 +52,7 @@
   freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
   nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
   es3:true, esnext:true, plusplus:true, maxparams:4, maxdepth:4,
-  maxstatements:24, maxcomplexity:13 */
+  maxstatements:28, maxcomplexity:14 */
 
 /*global require, module */
 
@@ -61,7 +61,7 @@
 
   var pCharAt = String.prototype.charAt;
   var pIndexOf = Array.prototype.indexOf;
-  var pSlice = Array.prototype.slice;
+  var pPush = Array.prototype.push;
   var pfindIndex = Array.prototype.findIndex;
   var $abs = Math.abs;
   var $isNaN = Number.isNaN;
@@ -144,9 +144,11 @@
     if (!length) {
       return -1;
     }
+    var args = [searchElement];
     var extend;
     if (arguments.length > 2) {
       if (arguments.length > 3) {
+        pPush.call(args, arguments[2]);
         extend = arguments[3];
       } else if (isString(arguments[2])) {
         extend = safeToString(arguments[2]);
@@ -175,6 +177,9 @@
         return index in object && extendFn(searchElement, element);
       });
     }
-    return pIndexOf.apply(object, pSlice.call(arguments, 1));
+    if (!extendFn && args.length === 1 && arguments.length === 3) {
+      pPush.call(args, arguments[2]);
+    }
+    return pIndexOf.apply(object, args);
   };
 }());
