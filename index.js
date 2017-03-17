@@ -39,24 +39,27 @@
  * `es6.shim.js` provides compatibility shims so that legacy JavaScript engines
  * behave as closely as possible to ECMAScript 6 (Harmony).
  *
- * @version 1.0.17
+ * @version 1.1.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
  * @module index-of-x
  */
 
-/*jslint maxlen:80, es6:true, white:true */
+/* jslint maxlen:80, es6:true, white:true */
 
-/*jshint bitwise:true, camelcase:true, curly:true, eqeqeq:true, forin:true,
-  freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
-  nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
-  es3:true, esnext:true, plusplus:true, maxparams:4, maxdepth:4,
-  maxstatements:28, maxcomplexity:14 */
+/* jshint bitwise:true, camelcase:true, curly:true, eqeqeq:true, forin:true,
+   freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
+   nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
+   es3:false, esnext:true, plusplus:true, maxparams:1, maxdepth:1,
+   maxstatements:3, maxcomplexity:2 */
 
-/*global require, module */
+/* eslint strict: 1, max-statements: 1, complexity: 1 */
 
-;(function () {
+/* global require, module */
+
+;(function () { // eslint-disable-line no-extra-semi
+
   'use strict';
 
   var pCharAt = String.prototype.charAt;
@@ -84,18 +87,21 @@
    * @param {Function} extendFn The comparison function to use.
    * @return {number} Returns index of found element, otherwise -1.
    */
-  function findIndexFrom(object, searchElement, fromIndex, extendFn) {
+  var findIndexFrom = function (object, searchElement, fromIndex, extendFn) {
+    var fIdx = fromIndex;
     var isStr = isString(object);
     var length = toLength(object.length);
-    while (fromIndex < length) {
-      var element = isStr ? pCharAt.call(object, fromIndex) : object[fromIndex];
-      if (fromIndex in object && extendFn(element, searchElement)) {
-        return fromIndex;
+    while (fIdx < length) {
+      if (fIdx in object) {
+        var element = isStr ? pCharAt.call(object, fIdx) : object[fIdx];
+        if (extendFn(element, searchElement)) {
+          return fIdx;
+        }
       }
-      fromIndex += 1;
+      fIdx += 1;
     }
     return -1;
-  }
+  };
 
   /**
    * This method returns the first index at which a given element can be found
@@ -155,10 +161,13 @@
       }
     }
     var extendFn;
-    if (extend === 'SameValue') {
-      extendFn = sameValue;
-    } else if (extend === 'SameValueZero') {
-      extendFn = sameValueZero;
+    if (isString(extend)) {
+      extend = extend.toLowerCase();
+      if (extend === 'samevalue') {
+        extendFn = sameValue;
+      } else if (extend === 'samevaluezero') {
+        extendFn = sameValueZero;
+      }
     }
     if (extendFn && (searchElement === 0 || $isNaN(searchElement))) {
       var fromIndex = toInteger(arguments[2]);

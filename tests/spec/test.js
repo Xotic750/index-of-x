@@ -1,28 +1,30 @@
-/*jslint maxlen:80, es6:true, white:true */
+/* jslint maxlen:80, es6:true, white:true */
 
-/*jshint bitwise:true, camelcase:true, curly:true, eqeqeq:true, forin:true,
-  freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
-  nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
-  es3:true, esnext:true, plusplus:true, maxparams:3, maxdepth:2,
-  maxstatements:13, maxcomplexity:5 */
+/* jshint bitwise:true, camelcase:true, curly:true, eqeqeq:true, forin:true,
+   freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
+   nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
+   es3:false, esnext:true, plusplus:true, maxparams:1, maxdepth:2,
+   maxstatements:12, maxcomplexity:4 */
 
-/*global JSON:true, expect, module, require, describe, it, xit,  beforeEach,
+/* eslint strict: 1, max-lines: 1, symbol-description: 1, max-nested-callbacks: 1,
+   max-statements: 1, id-length: 1 */
+
+/* global JSON:true, expect, module, require, describe, it, xit,  beforeEach,
   returnExports */
 
-(function () {
+;(function () { // eslint-disable-line no-extra-semi
+
   'use strict';
 
   // IE 6 - 8 have a bug where this returns false.
-  var canDistinguishSparseFromUndefined = 0 in [undefined],
-    ifHasDenseUndefinedsIt = canDistinguishSparseFromUndefined ? it : xit,
-    undefinedIfNoSparseBug = canDistinguishSparseFromUndefined ?
-      undefined :
-      {
-        valueOf: function () {
-          return 0;
-        }
-      },
-      indexOf;
+  var canDistinguishSparseFromUndefined = 0 in [undefined];
+  var ifHasDenseUndefinedsIt = canDistinguishSparseFromUndefined ? it : xit;
+  var undefinedIfNoSparseBug = canDistinguishSparseFromUndefined ? undefined : {
+    valueOf: function () {
+      return 0;
+    }
+  };
+  var indexOf;
 
   if (typeof module === 'object' && module.exports) {
     require('es5-shim');
@@ -32,13 +34,20 @@
     }
     require('json3').runInContext(null, JSON);
     require('es6-shim');
+    var es7 = require('es7-shim');
+    Object.keys(es7).forEach(function (key) {
+      var obj = es7[key];
+      if (typeof obj.shim === 'function') {
+        obj.shim();
+      }
+    });
     indexOf = require('../../index.js');
   } else {
     indexOf = returnExports;
   }
 
   describe('indexOf', function () {
-    var testSubject, actual, expected;
+    var testSubject;
 
     beforeEach(function () {
       testSubject = [
@@ -58,31 +67,31 @@
     });
 
     it('should find the element', function () {
-      expected = 4;
-      actual = indexOf(testSubject, 'hej');
+      var expected = 4;
+      var actual = indexOf(testSubject, 'hej');
       expect(actual).toBe(expected);
     });
 
     it('should not find the element', function () {
-      expected = -1;
-      actual = indexOf(testSubject, 'mus');
+      var expected = -1;
+      var actual = indexOf(testSubject, 'mus');
       expect(actual).toBe(expected);
     });
 
     ifHasDenseUndefinedsIt('should find undefined as well', function () {
-      expected = -1;
-      actual = indexOf(testSubject, undefined);
+      var expected = -1;
+      var actual = indexOf(testSubject, undefined);
       expect(actual).not.toBe(expected);
     });
 
     ifHasDenseUndefinedsIt('should skip unset indexes', function () {
-      expected = 2;
-      actual = indexOf(testSubject, undefined);
+      var expected = 2;
+      var actual = indexOf(testSubject, undefined);
       expect(actual).toBe(expected);
     });
 
     it('should use a strict test', function () {
-      actual = indexOf(testSubject, null);
+      var actual = indexOf(testSubject, null);
       expect(actual).toBe(5);
 
       actual = indexOf(testSubject, '2');
@@ -115,10 +124,10 @@
     });
 
     it('should work with object items', function () {
-      var a = [],
-        b = {},
-        c = new Date(),
-        arr = [a, b ,c];
+      var a = [];
+      var b = {};
+      var c = new Date();
+      var arr = [a, b, c];
       expect(indexOf(arr, a)).toBe(0);
       expect(indexOf(arr, b)).toBe(1);
       expect(indexOf(arr, c)).toBe(2);
@@ -152,31 +161,31 @@
       });
 
       it('should find the element (array-like)', function () {
-        expected = 4;
-        actual = indexOf(testAL, 'hej');
+        var expected = 4;
+        var actual = indexOf(testAL, 'hej');
         expect(actual).toBe(expected);
       });
 
       it('should not find the element (array-like)', function () {
-        expected = -1;
-        actual = indexOf(testAL, 'mus');
+        var expected = -1;
+        var actual = indexOf(testAL, 'mus');
         expect(actual).toBe(expected);
       });
 
       ifHasDenseUndefinedsIt('should find undefined as well (array-like)', function () {
-        expected = -1;
-        actual = indexOf(testAL, undefined);
+        var expected = -1;
+        var actual = indexOf(testAL, undefined);
         expect(actual).not.toBe(expected);
       });
 
       ifHasDenseUndefinedsIt('should skip unset indexes (array-like)', function () {
-        expected = 2;
-        actual = indexOf(testAL, undefined);
+        var expected = 2;
+        var actual = indexOf(testAL, undefined);
         expect(actual).toBe(expected);
       });
 
       it('should use a strict test (array-like)', function () {
-        actual = indexOf(testAL, null);
+        var actual = indexOf(testAL, null);
         expect(actual).toBe(5);
 
         actual = indexOf(testAL, '2');
@@ -205,7 +214,7 @@
   });
 
   describe('indexOf: SameValueZero', function () {
-    var testSubject, actual, expected;
+    var testSubject;
 
     beforeEach(function () {
       testSubject = [
@@ -225,31 +234,31 @@
     });
 
     it('should find the element', function () {
-      expected = 4;
-      actual = indexOf(testSubject, 'hej', 'SameValueZero');
+      var expected = 4;
+      var actual = indexOf(testSubject, 'hej', 'SameValueZero');
       expect(actual).toBe(expected);
     });
 
     it('should not find the element', function () {
-      expected = -1;
-      actual = indexOf(testSubject, 'mus', 'SameValueZero');
+      var expected = -1;
+      var actual = indexOf(testSubject, 'mus', 'SameValueZero');
       expect(actual).toBe(expected);
     });
 
     ifHasDenseUndefinedsIt('should find undefined as well', function () {
-      expected = -1;
-      actual = indexOf(testSubject, undefined, 'SameValueZero');
+      var expected = -1;
+      var actual = indexOf(testSubject, undefined, 'SameValueZero');
       expect(actual).not.toBe(expected);
     });
 
     ifHasDenseUndefinedsIt('should skip unset indexes', function () {
-      expected = 2;
-      actual = indexOf(testSubject, undefined, 'SameValueZero');
+      var expected = 2;
+      var actual = indexOf(testSubject, undefined, 'SameValueZero');
       expect(actual).toBe(expected);
     });
 
     it('should use a SameValueZero test', function () {
-      actual = indexOf(testSubject, null, 'SameValueZero');
+      var actual = indexOf(testSubject, null, 'SameValueZero');
       expect(actual).toBe(5);
 
       actual = indexOf(testSubject, '2', 'SameValueZero');
@@ -282,10 +291,10 @@
     });
 
     it('should work with object items', function () {
-      var a = [],
-        b = {},
-        c = new Date(),
-        arr = [a, b ,c];
+      var a = [];
+      var b = {};
+      var c = new Date();
+      var arr = [a, b, c];
       expect(indexOf(arr, a, 'SameValueZero')).toBe(0);
       expect(indexOf(arr, b, 'SameValueZero')).toBe(1);
       expect(indexOf(arr, c, 'SameValueZero')).toBe(2);
@@ -319,31 +328,31 @@
       });
 
       it('should find the element (array-like)', function () {
-        expected = 4;
-        actual = indexOf(testAL, 'hej', 'SameValueZero');
+        var expected = 4;
+        var actual = indexOf(testAL, 'hej', 'SameValueZero');
         expect(actual).toBe(expected);
       });
 
       it('should not find the element (array-like)', function () {
-        expected = -1;
-        actual = indexOf(testAL, 'mus', 'SameValueZero');
+        var expected = -1;
+        var actual = indexOf(testAL, 'mus', 'SameValueZero');
         expect(actual).toBe(expected);
       });
 
       ifHasDenseUndefinedsIt('should find undefined as well (array-like)', function () {
-        expected = -1;
-        actual = indexOf(testAL, undefined, 'SameValueZero');
+        var expected = -1;
+        var actual = indexOf(testAL, undefined, 'SameValueZero');
         expect(actual).not.toBe(expected);
       });
 
       ifHasDenseUndefinedsIt('should skip unset indexes (array-like)', function () {
-        expected = 2;
-        actual = indexOf(testAL, undefined, 'SameValueZero');
+        var expected = 2;
+        var actual = indexOf(testAL, undefined, 'SameValueZero');
         expect(actual).toBe(expected);
       });
 
       it('should use a SameValueZero test (array-like)', function () {
-        actual = indexOf(testAL, null, 'SameValueZero');
+        var actual = indexOf(testAL, null, 'SameValueZero');
         expect(actual).toBe(5);
 
         actual = indexOf(testAL, '2', 'SameValueZero');
@@ -372,7 +381,7 @@
   });
 
   describe('indexOf: SameValue', function () {
-    var testSubject, actual, expected;
+    var testSubject;
 
     beforeEach(function () {
       testSubject = [
@@ -392,31 +401,31 @@
     });
 
     it('should find the element', function () {
-      expected = 4;
-      actual = indexOf(testSubject, 'hej', 'SameValue');
+      var expected = 4;
+      var actual = indexOf(testSubject, 'hej', 'SameValue');
       expect(actual).toBe(expected);
     });
 
     it('should not find the element', function () {
-      expected = -1;
-      actual = indexOf(testSubject, 'mus', 'SameValue');
+      var expected = -1;
+      var actual = indexOf(testSubject, 'mus', 'SameValue');
       expect(actual).toBe(expected);
     });
 
     ifHasDenseUndefinedsIt('should find undefined as well', function () {
-      expected = -1;
-      actual = indexOf(testSubject, undefined, 'SameValue');
+      var expected = -1;
+      var actual = indexOf(testSubject, undefined, 'SameValue');
       expect(actual).not.toBe(expected);
     });
 
     ifHasDenseUndefinedsIt('should skip unset indexes', function () {
-      expected = 2;
-      actual = indexOf(testSubject, undefined, 'SameValue');
+      var expected = 2;
+      var actual = indexOf(testSubject, undefined, 'SameValue');
       expect(actual).toBe(expected);
     });
 
     it('should use a SameValue test', function () {
-      actual = indexOf(testSubject, null, 'SameValue');
+      var actual = indexOf(testSubject, null, 'SameValue');
       expect(actual).toBe(5);
 
       actual = indexOf(testSubject, '2', 'SameValue');
@@ -449,10 +458,10 @@
     });
 
     it('should work with object items', function () {
-      var a = [],
-        b = {},
-        c = new Date(),
-        arr = [a, b ,c];
+      var a = [];
+      var b = {};
+      var c = new Date();
+      var arr = [a, b, c];
       expect(indexOf(arr, a, 'SameValue')).toBe(0);
       expect(indexOf(arr, b, 'SameValue')).toBe(1);
       expect(indexOf(arr, c, 'SameValue')).toBe(2);
@@ -486,31 +495,31 @@
       });
 
       it('should find the element (array-like)', function () {
-        expected = 4;
-        actual = indexOf(testAL, 'hej', 'SameValue');
+        var expected = 4;
+        var actual = indexOf(testAL, 'hej', 'SameValue');
         expect(actual).toBe(expected);
       });
 
       it('should not find the element (array-like)', function () {
-        expected = -1;
-        actual = indexOf(testAL, 'mus', 'SameValue');
+        var expected = -1;
+        var actual = indexOf(testAL, 'mus', 'SameValue');
         expect(actual).toBe(expected);
       });
 
       ifHasDenseUndefinedsIt('should find undefined as well (array-like)', function () {
-        expected = -1;
-        actual = indexOf(testAL, undefined, 'SameValue');
+        var expected = -1;
+        var actual = indexOf(testAL, undefined, 'SameValue');
         expect(actual).not.toBe(expected);
       });
 
       ifHasDenseUndefinedsIt('should skip unset indexes (array-like)', function () {
-        expected = 2;
-        actual = indexOf(testAL, undefined, 'SameValue');
+        var expected = 2;
+        var actual = indexOf(testAL, undefined, 'SameValue');
         expect(actual).toBe(expected);
       });
 
       it('should use a SameValue test (array-like)', function () {
-        actual = indexOf(testAL, null, 'SameValue');
+        var actual = indexOf(testAL, null, 'SameValue');
         expect(actual).toBe(5);
 
         actual = indexOf(testAL, '2', 'SameValue');
