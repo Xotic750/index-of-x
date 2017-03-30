@@ -22,39 +22,16 @@
  *
  * An extended ES6 indexOf module.
  *
- * <h2>ECMAScript compatibility shims for legacy JavaScript engines</h2>
- * `es5-shim.js` monkey-patches a JavaScript context to contain all EcmaScript 5
- * methods that can be faithfully emulated with a legacy JavaScript engine.
+ * Requires ES3 or above.
  *
- * `es5-sham.js` monkey-patches other ES5 methods as closely as possible.
- * For these methods, as closely as possible to ES5 is not very close.
- * Many of these shams are intended only to allow code to be written to ES5
- * without causing run-time errors in older engines. In many cases,
- * this means that these shams cause many ES5 methods to silently fail.
- * Decide carefully whether this is what you want. Note: es5-sham.js requires
- * es5-shim.js to be able to work properly.
- *
- * `json3.js` monkey-patches the EcmaScript 5 JSON implimentation faithfully.
- *
- * `es6.shim.js` provides compatibility shims so that legacy JavaScript engines
- * behave as closely as possible to ECMAScript 6 (Harmony).
- *
- * @version 1.1.0
+ * @version 1.2.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
  * @module index-of-x
  */
 
-/* jslint maxlen:80, es6:true, white:true */
-
-/* jshint bitwise:true, camelcase:true, curly:true, eqeqeq:true, forin:true,
-   freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
-   nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
-   es3:false, esnext:true, plusplus:true, maxparams:1, maxdepth:1,
-   maxstatements:3, maxcomplexity:2 */
-
-/* eslint strict: 1, max-statements: 1, complexity: 1 */
+/* eslint strict: 1, max-statements: 1, complexity: 1, no-invalid-this: 1 */
 
 /* global require, module */
 
@@ -62,19 +39,45 @@
 
   'use strict';
 
-  var pCharAt = String.prototype.charAt;
-  var pIndexOf = Array.prototype.indexOf;
-  var pPush = Array.prototype.push;
-  var pfindIndex = Array.prototype.findIndex;
-  var $abs = Math.abs;
-  var $isNaN = Number.isNaN;
+  var $isNaN = require('is-nan');
   var isString = require('is-string');
   var toInteger = require('to-integer-x');
   var toObject = require('to-object-x');
   var toLength = require('to-length-x');
   var sameValueZero = require('same-value-zero-x');
   var safeToString = require('safe-to-string-x');
-  var sameValue = Object.is;
+  var sameValue = require('object-is');
+  var findIndex = require('find-index-x');
+  var pIndexOf = Array.prototype.indexOf;
+
+  if (typeof pIndexOf !== 'function' || [0, 1].indexOf(1, 2) !== -1) {
+    var boxedString = Object('a');
+    var splitString = boxedString[0] !== 'a' || !(0 in boxedString);
+
+    pIndexOf = function indexOf(searchElement) {
+      var self = splitString && isString(this) ? this.split('') : toObject(this);
+      var length = self.length >>> 0;
+
+      if (length === 0) {
+        return -1;
+      }
+
+      var i = 0;
+      if (arguments.length > 1) {
+        i = toInteger(arguments[1]);
+      }
+
+      // handle negative indices
+      i = i >= 0 ? i : Math.max(0, length + i);
+      while (i < length) {
+        if (i in self && self[i] === searchElement) {
+          return i;
+        }
+        i += 1;
+      }
+      return -1;
+    };
+  }
 
   /**
    * This method returns an index in the array, if an element in the array
@@ -87,13 +90,13 @@
    * @param {Function} extendFn The comparison function to use.
    * @return {number} Returns index of found element, otherwise -1.
    */
-  var findIndexFrom = function (object, searchElement, fromIndex, extendFn) {
+  var findIdxFrom = function findIndexFrom(object, searchElement, fromIndex, extendFn) {
     var fIdx = fromIndex;
     var isStr = isString(object);
     var length = toLength(object.length);
     while (fIdx < length) {
       if (fIdx in object) {
-        var element = isStr ? pCharAt.call(object, fIdx) : object[fIdx];
+        var element = isStr ? object.charAt(fIdx) : object[fIdx];
         if (extendFn(element, searchElement)) {
           return fIdx;
         }
@@ -154,7 +157,7 @@
     var extend;
     if (arguments.length > 2) {
       if (arguments.length > 3) {
-        pPush.call(args, arguments[2]);
+        args.push(arguments[2]);
         extend = arguments[3];
       } else if (isString(arguments[2])) {
         extend = safeToString(arguments[2]);
@@ -173,21 +176,21 @@
       var fromIndex = toInteger(arguments[2]);
       if (fromIndex < length) {
         if (fromIndex < 0) {
-          fromIndex = length - $abs(fromIndex);
+          fromIndex = length - Math.abs(fromIndex);
           if (fromIndex < 0) {
             fromIndex = 0;
           }
         }
       }
       if (fromIndex > 0) {
-        return findIndexFrom(object, searchElement, fromIndex, extendFn);
+        return findIdxFrom(object, searchElement, fromIndex, extendFn);
       }
-      return pfindIndex.call(object, function (element, index) {
+      return findIndex(object, function (element, index) {
         return index in object && extendFn(searchElement, element);
       });
     }
     if (!extendFn && args.length === 1 && arguments.length === 3) {
-      pPush.call(args, arguments[2]);
+      args.push(arguments[2]);
     }
     return pIndexOf.apply(object, args);
   };
