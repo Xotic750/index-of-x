@@ -1,197 +1,170 @@
-/**
- * @file
- * <a href="https://travis-ci.org/Xotic750/index-of-x"
- * title="Travis status">
- * <img src="https://travis-ci.org/Xotic750/index-of-x.svg?branch=master"
- * alt="Travis status" height="18">
- * </a>
- * <a href="https://david-dm.org/Xotic750/index-of-x"
- * title="Dependency status">
- * <img src="https://david-dm.org/Xotic750/index-of-x.svg"
- * alt="Dependency status" height="18"/>
- * </a>
- * <a href="https://david-dm.org/Xotic750/index-of-x#info=devDependencies"
- * title="devDependency status">
- * <img src="https://david-dm.org/Xotic750/index-of-x/dev-status.svg"
- * alt="devDependency status" height="18"/>
- * </a>
- * <a href="https://badge.fury.io/js/index-of-x" title="npm version">
- * <img src="https://badge.fury.io/js/index-of-x.svg"
- * alt="npm version" height="18">
- * </a>
- *
- * An extended ES6 indexOf module.
- *
- * Requires ES3 or above.
- *
- * @version 1.2.1
- * @author Xotic750 <Xotic750@gmail.com>
- * @copyright  Xotic750
- * @license {@link <https://opensource.org/licenses/MIT> MIT}
- * @module index-of-x
- */
+'use strict';
 
-/* eslint strict: 1, max-statements: 1, complexity: 1, no-invalid-this: 1 */
+var $isNaN = require('is-nan');
+var isString = require('is-string');
+var toInteger = require('to-integer-x');
+var toObject = require('to-object-x');
+var toLength = require('to-length-x');
+var sameValueZero = require('same-value-zero-x');
+var safeToString = require('safe-to-string-x');
+var sameValue = require('object-is');
+var findIndex = require('find-index-x');
+var pIndexOf = Array.prototype.indexOf;
 
-/* global require, module */
+if (typeof pIndexOf !== 'function' || [0, 1].indexOf(1, 2) !== -1) {
+  var boxedString = Object('a');
+  var splitString = boxedString[0] !== 'a' || !(0 in boxedString);
 
-;(function () { // eslint-disable-line no-extra-semi
+  pIndexOf = function indexOf(searchElement) {
+    // eslint-disable-next-line no-invalid-this
+    var self = splitString && isString(this) ? this.split('') : toObject(this);
+    var length = toLength(self.length);
 
-  'use strict';
-
-  var $isNaN = require('is-nan');
-  var isString = require('is-string');
-  var toInteger = require('to-integer-x');
-  var toObject = require('to-object-x');
-  var toLength = require('to-length-x');
-  var sameValueZero = require('same-value-zero-x');
-  var safeToString = require('safe-to-string-x');
-  var sameValue = require('object-is');
-  var findIndex = require('find-index-x');
-  var pIndexOf = Array.prototype.indexOf;
-
-  if (typeof pIndexOf !== 'function' || [0, 1].indexOf(1, 2) !== -1) {
-    var boxedString = Object('a');
-    var splitString = boxedString[0] !== 'a' || !(0 in boxedString);
-
-    pIndexOf = function indexOf(searchElement) {
-      var self = splitString && isString(this) ? this.split('') : toObject(this);
-      var length = self.length >>> 0;
-
-      if (length === 0) {
-        return -1;
-      }
-
-      var i = 0;
-      if (arguments.length > 1) {
-        i = toInteger(arguments[1]);
-      }
-
-      // handle negative indices
-      i = i >= 0 ? i : Math.max(0, length + i);
-      while (i < length) {
-        if (i in self && self[i] === searchElement) {
-          return i;
-        }
-        i += 1;
-      }
+    if (length < 1) {
       return -1;
-    };
-  }
-
-  /**
-   * This method returns an index in the array, if an element in the array
-   * satisfies the provided testing function. Otherwise -1 is returned.
-   *
-   * @private
-   * @param {Array} object The array to search.
-   * @param {*} searchElement Element to locate in the array.
-   * @param {number} fromIndex The index to start the search at.
-   * @param {Function} extendFn The comparison function to use.
-   * @return {number} Returns index of found element, otherwise -1.
-   */
-  var findIdxFrom = function findIndexFrom(object, searchElement, fromIndex, extendFn) {
-    var fIdx = fromIndex;
-    var isStr = isString(object);
-    var length = toLength(object.length);
-    while (fIdx < length) {
-      if (fIdx in object) {
-        var element = isStr ? object.charAt(fIdx) : object[fIdx];
-        if (extendFn(element, searchElement)) {
-          return fIdx;
-        }
-      }
-      fIdx += 1;
     }
+
+    var i = 0;
+    if (arguments.length > 1) {
+      i = toInteger(arguments[1]);
+    }
+
+    // handle negative indices
+    i = i >= 0 ? i : Math.max(0, length + i);
+    while (i < length) {
+      if (i in self && self[i] === searchElement) {
+        return i;
+      }
+
+      i += 1;
+    }
+
     return -1;
   };
+}
 
-  /**
-   * This method returns the first index at which a given element can be found
-   * in the array, or -1 if it is not present.
-   *
-   * @param {Array} array The array to search.
-   * @throws {TypeError} If `array` is `null` or `undefined`.
-   * @param {*} searchElement Element to locate in the `array`.
-   * @param {number} [fromIndex] The index to start the search at. If the
-   *  index is greater than or equal to the array's length, -1 is returned,
-   *  which means the array will not be searched. If the provided index value is
-   *  a negative number, it is taken as the offset from the end of the array.
-   *  Note: if the provided index is negative, the array is still searched from
-   *  front to back. If the calculated index is less than 0, then the whole
-   *  array will be searched. Default: 0 (entire array is searched).
-   * @param {string} [extend] Extension type: `SameValue` or `SameValueZero`.
-   * @return {number} Returns index of found element, otherwise -1.
-   * @example
-   * var indexOf = require('index-of-x');
-   * var subject = [2, 3, undefined, true, 'hej', null, 2, false, 0, -0, NaN];
-   *
-   * // Standard mode, operates just like `Array.prototype.indexOf`.
-   * indexOf(subject, null); // 5
-   * indexOf(testSubject, '2'); // -1
-   * indexOf(testSubject, NaN); // -1
-   * indexOf(testSubject, -0); // 8
-   * indexOf(testSubject, 2, 2); //6
-   *
-   * // `SameValueZero` mode extends `indexOf` to match `NaN`.
-   * indexOf(subject, null, 'SameValueZero'); // 5
-   * indexOf(testSubject, '2', 'SameValueZero'); // -1
-   * indexOf(testSubject, NaN, 'SameValueZero'); // 10
-   * indexOf(testSubject, -0, 'SameValueZero'); // 8
-   * indexOf(testSubject, 2, 2, 'SameValueZero'); //6
-   *
-   * // `SameValue` mode extends `indexOf` to match `NaN` and signed `0`.
-   * indexOf(subject, null, 'SameValue'); // 5
-   * indexOf(testSubject, '2', 'SameValue'); // -1
-   * indexOf(testSubject, NaN, 'SameValue'); // 10
-   * indexOf(testSubject, -0, 'SameValue'); // 9
-   * indexOf(testSubject, 2, 2, 'SameValue'); //6
-   */
-  module.exports = function indexOf(array, searchElement) {
-    var object = toObject(array);
-    var length = toLength(object.length);
-    if (!length) {
-      return -1;
-    }
-    var args = [searchElement];
-    var extend;
-    if (arguments.length > 2) {
-      if (arguments.length > 3) {
-        args.push(arguments[2]);
-        extend = arguments[3];
-      } else if (isString(arguments[2])) {
-        extend = safeToString(arguments[2]);
+/**
+ * This method returns an index in the array, if an element in the array
+ * satisfies the provided testing function. Otherwise -1 is returned.
+ *
+ * @private
+ * @param {Array} object - The array to search.
+ * @param {*} searchElement - Element to locate in the array.
+ * @param {number} fromIndex - The index to start the search at.
+ * @param {Function} extendFn - The comparison function to use.
+ * @returns {number} Returns index of found element, otherwise -1.
+ */
+// eslint-disable-next-line max-params
+var findIdxFrom = function findIndexFrom(object, searchElement, fromIndex, extendFn) {
+  var fIdx = fromIndex;
+  var isStr = isString(object);
+  var length = toLength(object.length);
+  while (fIdx < length) {
+    if (fIdx in object) {
+      var element = isStr ? object.charAt(fIdx) : object[fIdx];
+      if (extendFn(element, searchElement)) {
+        return fIdx;
       }
     }
-    var extendFn;
-    if (isString(extend)) {
-      extend = extend.toLowerCase();
-      if (extend === 'samevalue') {
-        extendFn = sameValue;
-      } else if (extend === 'samevaluezero') {
-        extendFn = sameValueZero;
-      }
+
+    fIdx += 1;
+  }
+
+  return -1;
+};
+
+/**
+ * This method returns the first index at which a given element can be found
+ * in the array, or -1 if it is not present.
+ *
+ * @param {Array} array - The array to search.
+ * @throws {TypeError} If `array` is `null` or `undefined`.
+ * @param {*} searchElement - Element to locate in the `array`.
+ * @param {number} [fromIndex] - The index to start the search at. If the
+ *  index is greater than or equal to the array's length, -1 is returned,
+ *  which means the array will not be searched. If the provided index value is
+ *  a negative number, it is taken as the offset from the end of the array.
+ *  Note: if the provided index is negative, the array is still searched from
+ *  front to back. If the calculated index is less than 0, then the whole
+ *  array will be searched. Default: 0 (entire array is searched).
+ * @param {string} [extend] - Extension type: `SameValue` or `SameValueZero`.
+ * @returns {number} Returns index of found element, otherwise -1.
+ * @example
+ * var indexOf = require('index-of-x');
+ * var subject = [2, 3, undefined, true, 'hej', null, 2, false, 0, -0, NaN];
+ *
+ * // Standard mode, operates just like `Array.prototype.indexOf`.
+ * indexOf(subject, null); // 5
+ * indexOf(testSubject, '2'); // -1
+ * indexOf(testSubject, NaN); // -1
+ * indexOf(testSubject, -0); // 8
+ * indexOf(testSubject, 2, 2); //6
+ *
+ * // `SameValueZero` mode extends `indexOf` to match `NaN`.
+ * indexOf(subject, null, 'SameValueZero'); // 5
+ * indexOf(testSubject, '2', 'SameValueZero'); // -1
+ * indexOf(testSubject, NaN, 'SameValueZero'); // 10
+ * indexOf(testSubject, -0, 'SameValueZero'); // 8
+ * indexOf(testSubject, 2, 2, 'SameValueZero'); //6
+ *
+ * // `SameValue` mode extends `indexOf` to match `NaN` and signed `0`.
+ * indexOf(subject, null, 'SameValue'); // 5
+ * indexOf(testSubject, '2', 'SameValue'); // -1
+ * indexOf(testSubject, NaN, 'SameValue'); // 10
+ * indexOf(testSubject, -0, 'SameValue'); // 9
+ * indexOf(testSubject, 2, 2, 'SameValue'); //6
+ */
+module.exports = function indexOf(array, searchElement) {
+  var object = toObject(array);
+  var length = toLength(object.length);
+  if (length < 1) {
+    return -1;
+  }
+
+  var args = [searchElement];
+  var extend;
+  if (arguments.length > 2) {
+    if (arguments.length > 3) {
+      args.push(arguments[2]);
+      extend = arguments[3];
+    } else if (isString(arguments[2])) {
+      extend = safeToString(arguments[2]);
     }
-    if (extendFn && (searchElement === 0 || $isNaN(searchElement))) {
-      var fromIndex = toInteger(arguments[2]);
-      if (fromIndex < length) {
+  }
+
+  var extendFn;
+  if (isString(extend)) {
+    extend = extend.toLowerCase();
+    if (extend === 'samevalue') {
+      extendFn = sameValue;
+    } else if (extend === 'samevaluezero') {
+      extendFn = sameValueZero;
+    }
+  }
+
+  if (extendFn && (searchElement === 0 || $isNaN(searchElement))) {
+    var fromIndex = toInteger(arguments[2]);
+    if (fromIndex < length) {
+      if (fromIndex < 0) {
+        fromIndex = length - Math.abs(fromIndex);
         if (fromIndex < 0) {
-          fromIndex = length - Math.abs(fromIndex);
-          if (fromIndex < 0) {
-            fromIndex = 0;
-          }
+          fromIndex = 0;
         }
       }
-      if (fromIndex > 0) {
-        return findIdxFrom(object, searchElement, fromIndex, extendFn);
-      }
-      return findIndex(object, function (element, index) {
-        return index in object && extendFn(searchElement, element);
-      });
     }
-    if (!extendFn && args.length === 1 && arguments.length === 3) {
-      args.push(arguments[2]);
+
+    if (fromIndex > 0) {
+      return findIdxFrom(object, searchElement, fromIndex, extendFn);
     }
-    return pIndexOf.apply(object, args);
-  };
-}());
+
+    return findIndex(object, function (element, index) {
+      return index in object && extendFn(searchElement, element);
+    });
+  }
+
+  if (Boolean(extendFn) === false && args.length === 1 && arguments.length === 3) {
+    args.push(arguments[2]);
+  }
+
+  return pIndexOf.apply(object, args);
+};
