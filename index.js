@@ -1,3 +1,12 @@
+/**
+ * @file An extended ES6 indexOf.
+ * @version 1.4.0
+ * @author Xotic750 <Xotic750@gmail.com>
+ * @copyright  Xotic750
+ * @license {@link <https://opensource.org/licenses/MIT> MIT}
+ * @module index-of-x
+ */
+
 'use strict';
 
 var $isNaN = require('is-nan');
