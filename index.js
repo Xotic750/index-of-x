@@ -1,6 +1,6 @@
 /**
  * @file An extended ES6 indexOf.
- * @version 1.4.0
+ * @version 1.5.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -18,30 +18,24 @@ var sameValueZero = require('same-value-zero-x');
 var safeToString = require('safe-to-string-x');
 var sameValue = require('object-is');
 var findIndex = require('find-index-x');
+var splitString = require('has-boxed-string-x') === false;
 var pIndexOf = Array.prototype.indexOf;
 
 if (typeof pIndexOf !== 'function' || [0, 1].indexOf(1, 2) !== -1) {
-  var boxedString = Object('a');
-  var splitString = boxedString[0] !== 'a' || !(0 in boxedString);
-
   pIndexOf = function indexOf(searchElement) {
     // eslint-disable-next-line no-invalid-this
-    var self = splitString && isString(this) ? this.split('') : toObject(this);
-    var length = toLength(self.length);
+    var iterable = splitString && isString(this) ? this.split('') : toObject(this);
+    var length = toLength(iterable.length);
 
     if (length < 1) {
       return -1;
     }
 
-    var i = 0;
-    if (arguments.length > 1) {
-      i = toInteger(arguments[1]);
-    }
-
+    var i = arguments.length > 1 ? toInteger(arguments[1]) : 0;
     // handle negative indices
     i = i >= 0 ? i : Math.max(0, length + i);
     while (i < length) {
-      if (i in self && self[i] === searchElement) {
+      if (i in iterable && iterable[i] === searchElement) {
         return i;
       }
 
@@ -66,14 +60,11 @@ if (typeof pIndexOf !== 'function' || [0, 1].indexOf(1, 2) !== -1) {
 // eslint-disable-next-line max-params
 var findIdxFrom = function findIndexFrom(object, searchElement, fromIndex, extendFn) {
   var fIdx = fromIndex;
-  var isStr = isString(object);
+  var iterable = splitString && isString(object) ? object.split('') : object;
   var length = toLength(object.length);
   while (fIdx < length) {
-    if (fIdx in object) {
-      var element = isStr ? object.charAt(fIdx) : object[fIdx];
-      if (extendFn(element, searchElement)) {
-        return fIdx;
-      }
+    if (fIdx in object && extendFn(iterable[fIdx], searchElement)) {
+      return fIdx;
     }
 
     fIdx += 1;
@@ -134,7 +125,7 @@ module.exports = function indexOf(array, searchElement) {
   var extend;
   if (arguments.length > 2) {
     if (arguments.length > 3) {
-      args.push(arguments[2]);
+      args[1] = arguments[2];
       extend = arguments[3];
     } else if (isString(arguments[2])) {
       extend = safeToString(arguments[2]);
@@ -171,8 +162,8 @@ module.exports = function indexOf(array, searchElement) {
     });
   }
 
-  if (Boolean(extendFn) === false && args.length === 1 && arguments.length === 3) {
-    args.push(arguments[2]);
+  if (Boolean(extendFn) === false && args.length === 1 && arguments.length > 2) {
+    args[1] = arguments[2];
   }
 
   return pIndexOf.apply(object, args);
