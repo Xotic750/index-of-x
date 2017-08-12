@@ -1,6 +1,6 @@
 /**
  * @file An extended ES6 indexOf.
- * @version 1.5.0
+ * @version 1.7.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -24,8 +24,7 @@ var pIndexOf = Array.prototype.indexOf;
 if (typeof pIndexOf !== 'function' || [0, 1].indexOf(1, 2) !== -1) {
   pIndexOf = function indexOf(searchElement) {
     // eslint-disable-next-line no-invalid-this
-    var iterable = splitString && isString(this) ? this.split('') : toObject(this);
-    var length = toLength(iterable.length);
+    var length = toLength(this.length);
 
     if (length < 1) {
       return -1;
@@ -35,7 +34,8 @@ if (typeof pIndexOf !== 'function' || [0, 1].indexOf(1, 2) !== -1) {
     // handle negative indices
     i = i >= 0 ? i : Math.max(0, length + i);
     while (i < length) {
-      if (i in iterable && iterable[i] === searchElement) {
+      // eslint-disable-next-line no-invalid-this
+      if (i in this && this[i] === searchElement) {
         return i;
       }
 
@@ -60,10 +60,9 @@ if (typeof pIndexOf !== 'function' || [0, 1].indexOf(1, 2) !== -1) {
 // eslint-disable-next-line max-params
 var findIdxFrom = function findIndexFrom(object, searchElement, fromIndex, extendFn) {
   var fIdx = fromIndex;
-  var iterable = splitString && isString(object) ? object.split('') : object;
   var length = toLength(object.length);
   while (fIdx < length) {
-    if (fIdx in object && extendFn(iterable[fIdx], searchElement)) {
+    if (fIdx in object && extendFn(object[fIdx], searchElement)) {
       return fIdx;
     }
 
@@ -116,7 +115,8 @@ var findIdxFrom = function findIndexFrom(object, searchElement, fromIndex, exten
  */
 module.exports = function indexOf(array, searchElement) {
   var object = toObject(array);
-  var length = toLength(object.length);
+  var iterable = splitString && isString(object) ? object.split('') : object;
+  var length = toLength(iterable.length);
   if (length < 1) {
     return -1;
   }
@@ -154,11 +154,11 @@ module.exports = function indexOf(array, searchElement) {
     }
 
     if (fromIndex > 0) {
-      return findIdxFrom(object, searchElement, fromIndex, extendFn);
+      return findIdxFrom(iterable, searchElement, fromIndex, extendFn);
     }
 
-    return findIndex(object, function (element, index) {
-      return index in object && extendFn(searchElement, element);
+    return findIndex(iterable, function (element, index) {
+      return index in iterable && extendFn(searchElement, element);
     });
   }
 
@@ -166,5 +166,5 @@ module.exports = function indexOf(array, searchElement) {
     args[1] = arguments[2];
   }
 
-  return pIndexOf.apply(object, args);
+  return pIndexOf.apply(iterable, args);
 };
