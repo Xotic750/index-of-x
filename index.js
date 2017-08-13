@@ -1,6 +1,6 @@
 /**
  * @file An extended ES6 indexOf.
- * @version 1.9.0
+ * @version 1.10.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -24,7 +24,11 @@ var pIndexOf = Array.prototype.indexOf;
 if (typeof pIndexOf !== 'function' || [0, 1].indexOf(1, 2) !== -1) {
   pIndexOf = function indexOf(searchElement) {
     // eslint-disable-next-line no-invalid-this
-    var length = this.length;
+    var length = toLength(this.length);
+    if (length < 1) {
+      return -1;
+    }
+
     var i = arguments.length > 1 ? toInteger(arguments[1]) : 0;
     // handle negative indices
     i = i >= 0 ? i : Math.max(0, length + i);
