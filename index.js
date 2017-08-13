@@ -1,6 +1,6 @@
 /**
  * @file An extended ES6 indexOf.
- * @version 1.8.0
+ * @version 1.9.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -24,12 +24,7 @@ var pIndexOf = Array.prototype.indexOf;
 if (typeof pIndexOf !== 'function' || [0, 1].indexOf(1, 2) !== -1) {
   pIndexOf = function indexOf(searchElement) {
     // eslint-disable-next-line no-invalid-this
-    var length = toLength(this.length);
-
-    if (length < 1) {
-      return -1;
-    }
-
+    var length = this.length;
     var i = arguments.length > 1 ? toInteger(arguments[1]) : 0;
     // handle negative indices
     i = i >= 0 ? i : Math.max(0, length + i);
@@ -51,18 +46,18 @@ if (typeof pIndexOf !== 'function' || [0, 1].indexOf(1, 2) !== -1) {
  * satisfies the provided testing function. Otherwise -1 is returned.
  *
  * @private
- * @param {Array} object - The array to search.
+ * @param {Array} array - The array to search.
  * @param {*} searchElement - Element to locate in the array.
  * @param {number} fromIndex - The index to start the search at.
  * @param {Function} extendFn - The comparison function to use.
  * @returns {number} Returns index of found element, otherwise -1.
  */
 // eslint-disable-next-line max-params
-var findIdxFrom = function findIndexFrom(object, searchElement, fromIndex, extendFn) {
+var findIdxFrom = function findIndexFrom(array, searchElement, fromIndex, extendFn) {
   var fIdx = fromIndex;
-  var length = toLength(object.length);
+  var length = array.length;
   while (fIdx < length) {
-    if (fIdx in object && extendFn(object[fIdx], searchElement)) {
+    if (fIdx in array && extendFn(array[fIdx], searchElement)) {
       return fIdx;
     }
 
