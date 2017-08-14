@@ -97,10 +97,12 @@ describe('indexOf', function () {
   it('should work with negative fromIndex', function () {
     expect(indexOf(testSubject, 2, -5)).toBe(6);
     expect(indexOf(testSubject, 2, -11)).toBe(0);
+    expect(indexOf(testSubject, 2, -Infinity)).toBe(0);
   });
 
   it('should work with fromIndex being greater than the length', function () {
     expect(indexOf(testSubject, 0, 20)).toBe(-1);
+    expect(indexOf(testSubject, 0, Infinity)).toBe(-1);
   });
 
   it('should work with fromIndex being negative and greater than the length', function () {

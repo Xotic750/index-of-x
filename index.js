@@ -1,6 +1,6 @@
 /**
  * @file An extended ES6 indexOf.
- * @version 1.10.0
+ * @version 2.0.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -11,13 +11,13 @@
 
 var $isNaN = require('is-nan');
 var isString = require('is-string');
-var toInteger = require('to-integer-x');
 var toObject = require('to-object-x');
 var toLength = require('to-length-x');
 var sameValueZero = require('same-value-zero-x');
 var safeToString = require('safe-to-string-x');
 var sameValue = require('object-is');
 var findIndex = require('find-index-x');
+var calcFromIndex = require('calculate-from-index-x');
 var splitString = require('has-boxed-string-x') === false;
 var pIndexOf = Array.prototype.indexOf;
 
@@ -29,7 +29,7 @@ if (typeof pIndexOf !== 'function' || [0, 1].indexOf(1, 2) !== -1) {
       return -1;
     }
 
-    var i = arguments.length > 1 ? toInteger(arguments[1]) : 0;
+    var i = arguments[1];
     // handle negative indices
     i = i >= 0 ? i : Math.max(0, length + i);
     while (i < length) {
@@ -59,7 +59,7 @@ if (typeof pIndexOf !== 'function' || [0, 1].indexOf(1, 2) !== -1) {
 // eslint-disable-next-line max-params
 var findIdxFrom = function findIndexFrom(array, searchElement, fromIndex, extendFn) {
   var fIdx = fromIndex;
-  var length = array.length;
+  var length = toLength(array.length);
   while (fIdx < length) {
     if (fIdx in array && extendFn(array[fIdx], searchElement)) {
       return fIdx;
@@ -142,16 +142,7 @@ module.exports = function indexOf(array, searchElement) {
   }
 
   if (extendFn && (searchElement === 0 || $isNaN(searchElement))) {
-    var fromIndex = toInteger(arguments[2]);
-    if (fromIndex < length) {
-      if (fromIndex < 0) {
-        fromIndex = length - Math.abs(fromIndex);
-        if (fromIndex < 0) {
-          fromIndex = 0;
-        }
-      }
-    }
-
+    var fromIndex = calcFromIndex(iterable, arguments[2]);
     if (fromIndex > 0) {
       return findIdxFrom(iterable, searchElement, fromIndex, extendFn);
     }
@@ -162,7 +153,7 @@ module.exports = function indexOf(array, searchElement) {
   }
 
   if (Boolean(extendFn) === false && args.length === 1 && arguments.length > 2) {
-    args[1] = arguments[2];
+    args[1] = calcFromIndex(iterable, arguments[2]);
   }
 
   return pIndexOf.apply(iterable, args);
