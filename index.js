@@ -1,6 +1,6 @@
 /**
  * @file An extended ES6 indexOf.
- * @version 2.0.0
+ * @version 2.0.1
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -14,7 +14,6 @@ var isString = require('is-string');
 var toObject = require('to-object-x');
 var toLength = require('to-length-x');
 var sameValueZero = require('same-value-zero-x');
-var safeToString = require('safe-to-string-x');
 var sameValue = require('object-is');
 var findIndex = require('find-index-x');
 var calcFromIndex = require('calculate-from-index-x');
@@ -30,8 +29,6 @@ if (typeof pIndexOf !== 'function' || [0, 1].indexOf(1, 2) !== -1) {
     }
 
     var i = arguments[1];
-    // handle negative indices
-    i = i >= 0 ? i : Math.max(0, length + i);
     while (i < length) {
       // eslint-disable-next-line no-invalid-this
       if (i in this && this[i] === searchElement) {
@@ -120,17 +117,8 @@ module.exports = function indexOf(array, searchElement) {
     return -1;
   }
 
-  var args = [searchElement];
-  var extend;
-  if (arguments.length > 2) {
-    if (arguments.length > 3) {
-      args[1] = arguments[2];
-      extend = arguments[3];
-    } else if (isString(arguments[2])) {
-      extend = safeToString(arguments[2]);
-    }
-  }
-
+  var argLength = arguments.length;
+  var extend = argLength > 2 && argLength > 3 ? arguments[3] : arguments[2];
   var extendFn;
   if (isString(extend)) {
     extend = extend.toLowerCase();
@@ -141,8 +129,9 @@ module.exports = function indexOf(array, searchElement) {
     }
   }
 
+  var fromIndex;
   if (extendFn && (searchElement === 0 || $isNaN(searchElement))) {
-    var fromIndex = calcFromIndex(iterable, arguments[2]);
+    fromIndex = calcFromIndex(iterable, arguments[2]);
     if (fromIndex > 0) {
       return findIdxFrom(iterable, searchElement, fromIndex, extendFn);
     }
@@ -152,9 +141,6 @@ module.exports = function indexOf(array, searchElement) {
     });
   }
 
-  if (Boolean(extendFn) === false && args.length === 1 && arguments.length > 2) {
-    args[1] = calcFromIndex(iterable, arguments[2]);
-  }
-
-  return pIndexOf.apply(iterable, args);
+  fromIndex = argLength > 2 ? calcFromIndex(iterable, arguments[2]) : 0;
+  return pIndexOf.call(iterable, searchElement, fromIndex);
 };
