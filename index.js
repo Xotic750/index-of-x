@@ -1,6 +1,6 @@
 /**
  * @file An extended ES6 indexOf.
- * @version 2.0.1
+ * @version 2.0.2
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -129,9 +129,12 @@ module.exports = function indexOf(array, searchElement) {
     }
   }
 
-  var fromIndex;
+  var fromIndex = 0;
   if (extendFn && (searchElement === 0 || $isNaN(searchElement))) {
-    fromIndex = calcFromIndex(iterable, arguments[2]);
+    if (argLength > 3) {
+      fromIndex = calcFromIndex(iterable, arguments[2]);
+    }
+
     if (fromIndex > 0) {
       return findIdxFrom(iterable, searchElement, fromIndex, extendFn);
     }
@@ -141,6 +144,9 @@ module.exports = function indexOf(array, searchElement) {
     });
   }
 
-  fromIndex = argLength > 2 ? calcFromIndex(iterable, arguments[2]) : 0;
+  if (argLength > 3 || (argLength > 2 && Boolean(extendFn) === false)) {
+    fromIndex = calcFromIndex(iterable, arguments[2]);
+  }
+
   return pIndexOf.call(iterable, searchElement, fromIndex);
 };
