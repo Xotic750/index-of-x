@@ -1,6 +1,6 @@
 /**
  * @file An extended ES6 indexOf.
- * @version 2.0.3
+ * @version 2.1.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -9,7 +9,7 @@
 
 'use strict';
 
-var $isNaN = require('is-nan');
+var numberIsNaN = require('is-nan');
 var isString = require('is-string');
 var toObject = require('to-object-x');
 var toLength = require('to-length-x');
@@ -18,9 +18,16 @@ var sameValue = require('object-is');
 var findIndex = require('find-index-x');
 var calcFromIndex = require('calculate-from-index-x');
 var splitString = require('has-boxed-string-x') === false;
-var pIndexOf = Array.prototype.indexOf;
+var pIndexOf = typeof Array.prototype.indexOf === 'function' && Array.prototype.indexOf;
 
-if (typeof pIndexOf !== 'function' || [0, 1].indexOf(1, 2) !== -1) {
+var implimented;
+if (pIndexOf) {
+  try {
+    implimented = pIndexOf.call([0, 1], 1, 2) === -1 && pIndexOf.call([0, 1], 1) === 1;
+  } catch (ignore) {}
+}
+
+if (implimented !== true) {
   pIndexOf = function indexOf(searchElement) {
     // eslint-disable-next-line no-invalid-this
     var length = toLength(this.length);
@@ -130,7 +137,7 @@ module.exports = function indexOf(array, searchElement) {
   }
 
   var fromIndex = 0;
-  if (extendFn && (searchElement === 0 || $isNaN(searchElement))) {
+  if (extendFn && (searchElement === 0 || numberIsNaN(searchElement))) {
     if (argLength > 3) {
       fromIndex = calcFromIndex(iterable, arguments[2]);
       if (fromIndex >= length) {
