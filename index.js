@@ -1,6 +1,6 @@
 /**
  * @file An extended ES6 indexOf.
- * @version 2.2.0
+ * @version 2.3.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -58,8 +58,6 @@ if (pIndexOf) {
   }
 }
 
-// eslint-disable-next-line no-console
-console.log(isWorking);
 if (isWorking !== true) {
   pIndexOf = function indexOf(searchElement) {
     // eslint-disable-next-line no-invalid-this
