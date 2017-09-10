@@ -30,6 +30,8 @@ if (typeof module === 'object' && module.exports) {
   indexOf = returnExports;
 }
 
+var itHasDoc = typeof document !== 'undefined' && document ? it : xit;
+
 describe('indexOf', function () {
   var testSubject;
 
@@ -48,6 +50,24 @@ describe('indexOf', function () {
       NaN
     ];
     delete testSubject[1];
+  });
+
+  it('is a function', function () {
+    expect(typeof indexOf).toBe('function');
+  });
+
+  it('should throw when target is null or undefined', function () {
+    expect(function () {
+      indexOf();
+    }).toThrow();
+
+    expect(function () {
+      indexOf(void 0);
+    }).toThrow();
+
+    expect(function () {
+      indexOf(null);
+    }).toThrow();
   });
 
   it('should find the element', function () {
@@ -199,6 +219,25 @@ describe('indexOf', function () {
 
     it('should work with fromIndex being negative and greater than the length (array-like)', function () {
       expect(indexOf(testAL, 'hej', -20)).toBe(4);
+    });
+
+    it('should work with strings', function () {
+      expect(indexOf('abc', 'b')).toBe(1);
+    });
+
+    it('should work with arguments', function () {
+      var obj = (function () {
+        return arguments;
+      }('a', 'b', 'c'));
+
+      expect(indexOf(obj, 'b')).toBe(1);
+    });
+
+    itHasDoc('should work wih DOM elements', function () {
+      var fragment = document.createDocumentFragment();
+      var div = document.createElement('div');
+      fragment.appendChild(div);
+      expect(indexOf(fragment.childNodes, div)).toBe(0);
     });
   });
 });

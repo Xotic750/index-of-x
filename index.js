@@ -1,6 +1,6 @@
 /**
  * @file An extended ES6 indexOf.
- * @version 2.1.0
+ * @version 2.2.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -9,25 +9,58 @@
 
 'use strict';
 
-var numberIsNaN = require('is-nan');
+var numberIsNaN = require('is-nan-x');
 var isString = require('is-string');
+var isFalsey = require('is-falsey-x');
 var toObject = require('to-object-x');
 var toLength = require('to-length-x');
 var sameValueZero = require('same-value-zero-x');
-var sameValue = require('object-is');
+var sameValue = require('same-value-x');
 var findIndex = require('find-index-x');
 var calcFromIndex = require('calculate-from-index-x');
-var splitString = require('has-boxed-string-x') === false;
+var splitIfBoxedBug = require('split-if-boxed-bug-x');
 var pIndexOf = typeof Array.prototype.indexOf === 'function' && Array.prototype.indexOf;
 
-var implimented;
+var isWorking;
 if (pIndexOf) {
-  try {
-    implimented = pIndexOf.call([0, 1], 1, 2) === -1 && pIndexOf.call([0, 1], 1) === 1;
-  } catch (ignore) {}
+  var attempt = require('attempt-x');
+  var res = attempt.call([0, 1], pIndexOf, 1, 2);
+  isWorking = res.threw === false && res.value === -1;
+
+  if (isWorking) {
+    res = attempt.call([0, 1], pIndexOf, 1);
+    isWorking = res.threw === false && res.value === 1;
+  }
+
+  if (isWorking) {
+    res = attempt.call([0, -0], pIndexOf, -0);
+    isWorking = res.threw === false && res.value === 0;
+  }
+
+  if (isWorking) {
+    var testArr = [];
+    testArr.length = 2;
+    testArr[1] = void 0;
+    res = attempt.call(testArr, pIndexOf, void 0);
+    isWorking = res.threw === false && res.value === 1;
+  }
+
+  if (isWorking) {
+    res = attempt.call('abc', pIndexOf, 'c');
+    isWorking = res.threw === false && res.value === 2;
+  }
+
+  if (isWorking) {
+    res = attempt.call((function () {
+      return arguments;
+    }('a', 'b', 'c')), pIndexOf, 'c');
+    isWorking = res.threw === false && res.value === 2;
+  }
 }
 
-if (implimented !== true) {
+// eslint-disable-next-line no-console
+console.log(isWorking);
+if (isWorking !== true) {
   pIndexOf = function indexOf(searchElement) {
     // eslint-disable-next-line no-invalid-this
     var length = toLength(this.length);
@@ -118,7 +151,7 @@ var findIdxFrom = function findIndexFrom(array, searchElement, fromIndex, extend
  */
 module.exports = function indexOf(array, searchElement) {
   var object = toObject(array);
-  var iterable = splitString && isString(object) ? object.split('') : object;
+  var iterable = splitIfBoxedBug(object);
   var length = toLength(iterable.length);
   if (length < 1) {
     return -1;
@@ -158,7 +191,7 @@ module.exports = function indexOf(array, searchElement) {
     });
   }
 
-  if (argLength > 3 || (argLength > 2 && Boolean(extendFn) === false)) {
+  if (argLength > 3 || (argLength > 2 && isFalsey(extendFn))) {
     fromIndex = calcFromIndex(iterable, arguments[2]);
     if (fromIndex >= length) {
       return -1;
