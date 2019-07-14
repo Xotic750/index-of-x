@@ -56,10 +56,10 @@
     "is-nan-x": "^2.0.8",
     "is-string": "^1.0.4",
     "same-value-x": "^2.0.7",
-    "same-value-zero-x": "^2.0.6",
+    "same-value-zero-x": "^2.0.7",
     "split-if-boxed-bug-x": "^2.0.3",
-    "to-length-x": "^3.0.0",
-    "to-object-x": "^1.5.0"
+    "to-length-x": "^4.0.1",
+    "to-object-x": "^2.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.0",
