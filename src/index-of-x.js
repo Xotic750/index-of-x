@@ -7,24 +7,24 @@
  * @module index-of-x
  */
 
-'use strict';
+const numberIsNaN = require('is-nan-x');
+const isString = require('is-string');
+const isFalsey = require('is-falsey-x');
+const toObject = require('to-object-x');
+const toLength = require('to-length-x');
+const sameValueZero = require('same-value-zero-x');
+const sameValue = require('same-value-x');
+const findIndex = require('find-index-x');
+const calcFromIndex = require('calculate-from-index-x');
+const splitIfBoxedBug = require('split-if-boxed-bug-x');
 
-var numberIsNaN = require('is-nan-x');
-var isString = require('is-string');
-var isFalsey = require('is-falsey-x');
-var toObject = require('to-object-x');
-var toLength = require('to-length-x');
-var sameValueZero = require('same-value-zero-x');
-var sameValue = require('same-value-x');
-var findIndex = require('find-index-x');
-var calcFromIndex = require('calculate-from-index-x');
-var splitIfBoxedBug = require('split-if-boxed-bug-x');
-var pIndexOf = typeof Array.prototype.indexOf === 'function' && Array.prototype.indexOf;
+let pIndexOf = typeof Array.prototype.indexOf === 'function' && Array.prototype.indexOf;
 
-var isWorking;
+let isWorking;
+
 if (pIndexOf) {
-  var attempt = require('attempt-x');
-  var res = attempt.call([0, 1], pIndexOf, 1, 2);
+  const attempt = require('attempt-x');
+  let res = attempt.call([0, 1], pIndexOf, 1, 2);
   isWorking = res.threw === false && res.value === -1;
 
   if (isWorking) {
@@ -38,7 +38,7 @@ if (pIndexOf) {
   }
 
   if (isWorking) {
-    var testArr = [];
+    const testArr = [];
     testArr.length = 2;
     testArr[1] = void 0;
     res = attempt.call(testArr, pIndexOf, void 0);
@@ -51,9 +51,13 @@ if (pIndexOf) {
   }
 
   if (isWorking) {
-    res = attempt.call((function () {
-      return arguments;
-    }('a', 'b', 'c')), pIndexOf, 'c');
+    res = attempt.call(
+      (function() {
+        return arguments;
+      })('a', 'b', 'c'),
+      pIndexOf,
+      'c',
+    );
     isWorking = res.threw === false && res.value === 2;
   }
 }
@@ -61,12 +65,13 @@ if (pIndexOf) {
 if (isWorking !== true) {
   pIndexOf = function indexOf(searchElement) {
     // eslint-disable-next-line no-invalid-this
-    var length = toLength(this.length);
+    const length = toLength(this.length);
+
     if (length < 1) {
       return -1;
     }
 
-    var i = arguments[1];
+    let i = arguments[1];
     while (i < length) {
       // eslint-disable-next-line no-invalid-this
       if (i in this && this[i] === searchElement) {
@@ -92,9 +97,9 @@ if (isWorking !== true) {
  * @returns {number} Returns index of found element, otherwise -1.
  */
 // eslint-disable-next-line max-params
-var findIdxFrom = function findIndexFrom(array, searchElement, fromIndex, extendFn) {
-  var fIdx = fromIndex;
-  var length = toLength(array.length);
+const findIdxFrom = function findIndexFrom(array, searchElement, fromIndex, extendFn) {
+  let fIdx = fromIndex;
+  const length = toLength(array.length);
   while (fIdx < length) {
     if (fIdx in array && extendFn(array[fIdx], searchElement)) {
       return fIdx;
@@ -148,18 +153,21 @@ var findIdxFrom = function findIndexFrom(array, searchElement, fromIndex, extend
  * indexOf(testSubject, 2, 2, 'SameValue'); //6
  */
 module.exports = function indexOf(array, searchElement) {
-  var object = toObject(array);
-  var iterable = splitIfBoxedBug(object);
-  var length = toLength(iterable.length);
+  const object = toObject(array);
+  const iterable = splitIfBoxedBug(object);
+  const length = toLength(iterable.length);
+
   if (length < 1) {
     return -1;
   }
 
-  var argLength = arguments.length;
-  var extend = argLength > 2 && argLength > 3 ? arguments[3] : arguments[2];
-  var extendFn;
+  const argLength = arguments.length;
+  let extend = argLength > 2 && argLength > 3 ? arguments[3] : arguments[2];
+  let extendFn;
+
   if (isString(extend)) {
     extend = extend.toLowerCase();
+
     if (extend === 'samevalue') {
       extendFn = sameValue;
     } else if (extend === 'samevaluezero') {
@@ -167,10 +175,12 @@ module.exports = function indexOf(array, searchElement) {
     }
   }
 
-  var fromIndex = 0;
+  let fromIndex = 0;
+
   if (extendFn && (searchElement === 0 || numberIsNaN(searchElement))) {
     if (argLength > 3) {
       fromIndex = calcFromIndex(iterable, arguments[2]);
+
       if (fromIndex >= length) {
         return -1;
       }
@@ -184,13 +194,14 @@ module.exports = function indexOf(array, searchElement) {
       return findIdxFrom(iterable, searchElement, fromIndex, extendFn);
     }
 
-    return findIndex(iterable, function (element, index) {
+    return findIndex(iterable, function(element, index) {
       return index in iterable && extendFn(searchElement, element);
     });
   }
 
   if (argLength > 3 || (argLength > 2 && isFalsey(extendFn))) {
     fromIndex = calcFromIndex(iterable, arguments[2]);
+
     if (fromIndex >= length) {
       return -1;
     }
