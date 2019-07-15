@@ -50,7 +50,7 @@
     "url": "https://github.com/Xotic750/index-of-x/issues"
   },
   "dependencies": {
-    "calculate-from-index-x": "^2.2.0",
+    "calculate-from-index-x": "^3.0.1",
     "find-index-x": "^2.1.0",
     "is-falsey-x": "^2.0.6",
     "is-nan-x": "^2.0.9",
