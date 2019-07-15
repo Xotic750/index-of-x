@@ -1,3 +1,5 @@
+import indexOf from '../src/index-of-x';
+
 // IE 6 - 8 have a bug where this returns false.
 const canDistinguish = 0 in [undefined];
 const ifHasDenseUndefinedsIt = canDistinguish ? it : xit;
@@ -8,84 +10,69 @@ const undefinedIfNoSparseBug = canDistinguish
         return 0;
       },
     };
-let indexOf;
-
-if (typeof module === 'object' && module.exports) {
-  require('es5-shim');
-  require('es5-shim/es5-sham');
-
-  if (typeof JSON === 'undefined') {
-    JSON = {};
-  }
-
-  require('json3').runInContext(null, JSON);
-  require('es6-shim');
-  const es7 = require('es7-shim');
-  Object.keys(es7).forEach(function(key) {
-    const obj = es7[key];
-
-    if (typeof obj.shim === 'function') {
-      obj.shim();
-    }
-  });
-  indexOf = require('../../index.js');
-} else {
-  indexOf = returnExports;
-}
 
 const itHasDoc = typeof document !== 'undefined' && document ? it : xit;
 
 describe('indexOf', function() {
   let testSubject;
 
+  /* eslint-disable-next-line jest/no-hooks */
   beforeEach(function() {
     testSubject = [2, 3, undefinedIfNoSparseBug, true, 'hej', null, 2, false, 0, -0, NaN];
     delete testSubject[1];
   });
 
   it('is a function', function() {
+    expect.assertions(1);
     expect(typeof indexOf).toBe('function');
   });
 
   it('should throw when target is null or undefined', function() {
+    expect.assertions(3);
     expect(function() {
       indexOf();
-    }).toThrow();
+    }).toThrowErrorMatchingSnapshot();
 
     expect(function() {
+      /* eslint-disable-next-line no-void */
       indexOf(void 0);
-    }).toThrow();
+    }).toThrowErrorMatchingSnapshot();
 
     expect(function() {
       indexOf(null);
-    }).toThrow();
+    }).toThrowErrorMatchingSnapshot();
   });
 
   it('should find the element', function() {
+    expect.assertions(1);
     const expected = 4;
     const actual = indexOf(testSubject, 'hej');
     expect(actual).toBe(expected);
   });
 
   it('should not find the element', function() {
+    expect.assertions(1);
     const expected = -1;
     const actual = indexOf(testSubject, 'mus');
     expect(actual).toBe(expected);
   });
 
   ifHasDenseUndefinedsIt('should find undefined as well', function() {
+    expect.assertions(1);
     const expected = -1;
     const actual = indexOf(testSubject, undefined);
     expect(actual).not.toBe(expected);
   });
 
   ifHasDenseUndefinedsIt('should skip unset indexes', function() {
+    expect.assertions(1);
     const expected = 2;
     const actual = indexOf(testSubject, undefined);
     expect(actual).toBe(expected);
   });
 
   it('should use a strict test', function() {
+    expect.assertions(4);
     let actual = indexOf(testSubject, null);
     expect(actual).toBe(5);
 
@@ -100,27 +87,32 @@ describe('indexOf', function() {
   });
 
   it('should skip the first if fromIndex is set', function() {
+    expect.assertions(3);
     expect(indexOf(testSubject, 2, 2)).toBe(6);
     expect(indexOf(testSubject, 2, 0)).toBe(0);
     expect(indexOf(testSubject, 2, 6)).toBe(6);
   });
 
   it('should work with negative fromIndex', function() {
+    expect.assertions(3);
     expect(indexOf(testSubject, 2, -5)).toBe(6);
     expect(indexOf(testSubject, 2, -11)).toBe(0);
     expect(indexOf(testSubject, 2, -Infinity)).toBe(0);
   });
 
   it('should work with fromIndex being greater than the length', function() {
+    expect.assertions(2);
     expect(indexOf(testSubject, 0, 20)).toBe(-1);
     expect(indexOf(testSubject, 0, Infinity)).toBe(-1);
   });
 
   it('should work with fromIndex being negative and greater than the length', function() {
+    expect.assertions(1);
     expect(indexOf(testSubject, 'hej', -20)).toBe(4);
   });
 
   it('should work with object items', function() {
+    expect.assertions(6);
     const a = [];
     const b = {};
     const c = new Date();
@@ -136,6 +128,7 @@ describe('indexOf', function() {
   describe('array-like', function ArrayLike() {
     let testAL;
 
+    /* eslint-disable-next-line jest/no-hooks */
     beforeEach(function beforeEach() {
       testAL = {};
       testSubject = [2, 3, undefinedIfNoSparseBug, true, 'hej', null, 2, false, 0, -0, NaN];
@@ -146,30 +139,35 @@ describe('indexOf', function() {
     });
 
     it('should find the element (array-like)', function() {
+      expect.assertions(1);
       const expected = 4;
       const actual = indexOf(testAL, 'hej');
       expect(actual).toBe(expected);
     });
 
     it('should not find the element (array-like)', function() {
+      expect.assertions(1);
       const expected = -1;
       const actual = indexOf(testAL, 'mus');
       expect(actual).toBe(expected);
     });
 
     ifHasDenseUndefinedsIt('should find undefined as well (array-like)', function() {
+      expect.assertions(1);
       const expected = -1;
       const actual = indexOf(testAL, undefined);
       expect(actual).not.toBe(expected);
     });
 
     ifHasDenseUndefinedsIt('should skip unset indexes (array-like)', function() {
+      expect.assertions(1);
       const expected = 2;
       const actual = indexOf(testAL, undefined);
       expect(actual).toBe(expected);
     });
 
     it('should use a strict test (array-like)', function() {
+      expect.assertions(2);
       let actual = indexOf(testAL, null);
       expect(actual).toBe(5);
 
@@ -178,30 +176,37 @@ describe('indexOf', function() {
     });
 
     it('should skip the first if fromIndex is set (array-like)', function() {
+      expect.assertions(3);
       expect(indexOf(testAL, 2, 2)).toBe(6);
       expect(indexOf(testAL, 2, 0)).toBe(0);
       expect(indexOf(testAL, 2, 6)).toBe(6);
     });
 
     it('should work with negative fromIndex (array-like)', function() {
+      expect.assertions(2);
       expect(indexOf(testAL, 2, -5)).toBe(6);
       expect(indexOf(testAL, 2, -11)).toBe(0);
     });
 
     it('should work with fromIndex being greater than the length (array-like)', function() {
+      expect.assertions(1);
       expect(indexOf(testAL, 0, 20)).toBe(-1);
     });
 
     it('should work with fromIndex being negative and greater than the length (array-like)', function() {
+      expect.assertions(1);
       expect(indexOf(testAL, 'hej', -20)).toBe(4);
     });
 
     it('should work with strings', function() {
+      expect.assertions(1);
       expect(indexOf('abc', 'b')).toBe(1);
     });
 
     it('should work with arguments', function() {
-      const obj = (function() {
+      expect.assertions(1);
+      const obj = (function getArgs() {
+        /* eslint-disable-next-line prefer-rest-params */
         return arguments;
       })('a', 'b', 'c');
 
@@ -209,6 +214,7 @@ describe('indexOf', function() {
     });
 
     itHasDoc('should work wih DOM elements', function() {
+      expect.assertions(1);
       const fragment = document.createDocumentFragment();
       const div = document.createElement('div');
       fragment.appendChild(div);
@@ -220,36 +226,42 @@ describe('indexOf', function() {
 describe('indexOf: SameValueZero', function() {
   let testSubject;
 
+  /* eslint-disable-next-line jest/no-hooks */
   beforeEach(function() {
     testSubject = [2, 3, undefinedIfNoSparseBug, true, 'hej', null, 2, false, 0, -0, NaN];
     delete testSubject[1];
   });
 
   it('should find the element', function() {
+    expect.assertions(1);
     const expected = 4;
     const actual = indexOf(testSubject, 'hej', 'SameValueZero');
     expect(actual).toBe(expected);
   });
 
   it('should not find the element', function() {
+    expect.assertions(1);
     const expected = -1;
     const actual = indexOf(testSubject, 'mus', 'SameValueZero');
     expect(actual).toBe(expected);
   });
 
   ifHasDenseUndefinedsIt('should find undefined as well', function() {
+    expect.assertions(1);
     const expected = -1;
     const actual = indexOf(testSubject, undefined, 'SameValueZero');
     expect(actual).not.toBe(expected);
   });
 
   ifHasDenseUndefinedsIt('should skip unset indexes', function() {
+    expect.assertions(1);
     const expected = 2;
     const actual = indexOf(testSubject, undefined, 'SameValueZero');
     expect(actual).toBe(expected);
   });
 
   it('should use a SameValueZero test', function() {
+    expect.assertions(4);
     let actual = indexOf(testSubject, null, 'SameValueZero');
     expect(actual).toBe(5);
 
@@ -264,25 +276,30 @@ describe('indexOf: SameValueZero', function() {
   });
 
   it('should skip the first if fromIndex is set', function() {
+    expect.assertions(3);
     expect(indexOf(testSubject, 2, 2, 'SameValueZero')).toBe(6);
     expect(indexOf(testSubject, 2, 0, 'SameValueZero')).toBe(0);
     expect(indexOf(testSubject, 2, 6, 'SameValueZero')).toBe(6);
   });
 
   it('should work with negative fromIndex', function() {
+    expect.assertions(2);
     expect(indexOf(testSubject, 2, -5, 'SameValueZero')).toBe(6);
     expect(indexOf(testSubject, 2, -11, 'SameValueZero')).toBe(0);
   });
 
   it('should work with fromIndex being greater than the length', function() {
+    expect.assertions(1);
     expect(indexOf(testSubject, 0, 20, 'SameValueZero')).toBe(-1);
   });
 
   it('should work with fromIndex being negative and greater than the length', function() {
+    expect.assertions(1);
     expect(indexOf(testSubject, 'hej', -20, 'SameValueZero')).toBe(4);
   });
 
   it('should work with object items', function() {
+    expect.assertions(6);
     const a = [];
     const b = {};
     const c = new Date();
@@ -298,6 +315,7 @@ describe('indexOf: SameValueZero', function() {
   describe('array-like', function ArrayLike() {
     let testAL;
 
+    /* eslint-disable-next-line jest/no-hooks */
     beforeEach(function beforeEach() {
       testAL = {};
       testSubject = [2, 3, undefinedIfNoSparseBug, true, 'hej', null, 2, false, 0, -0, NaN];
@@ -308,30 +326,35 @@ describe('indexOf: SameValueZero', function() {
     });
 
     it('should find the element (array-like)', function() {
+      expect.assertions(1);
       const expected = 4;
       const actual = indexOf(testAL, 'hej', 'SameValueZero');
       expect(actual).toBe(expected);
     });
 
     it('should not find the element (array-like)', function() {
+      expect.assertions(1);
       const expected = -1;
       const actual = indexOf(testAL, 'mus', 'SameValueZero');
       expect(actual).toBe(expected);
     });
 
     ifHasDenseUndefinedsIt('should find undefined as well (array-like)', function() {
+      expect.assertions(1);
       const expected = -1;
       const actual = indexOf(testAL, undefined, 'SameValueZero');
       expect(actual).not.toBe(expected);
     });
 
     ifHasDenseUndefinedsIt('should skip unset indexes (array-like)', function() {
+      expect.assertions(1);
       const expected = 2;
       const actual = indexOf(testAL, undefined, 'SameValueZero');
       expect(actual).toBe(expected);
     });
 
     it('should use a SameValueZero test (array-like)', function() {
+      expect.assertions(2);
       let actual = indexOf(testAL, null, 'SameValueZero');
       expect(actual).toBe(5);
 
@@ -340,21 +363,25 @@ describe('indexOf: SameValueZero', function() {
     });
 
     it('should skip the first if fromIndex is set (array-like)', function() {
+      expect.assertions(3);
       expect(indexOf(testAL, 2, 2, 'SameValueZero')).toBe(6);
       expect(indexOf(testAL, 2, 0, 'SameValueZero')).toBe(0);
       expect(indexOf(testAL, 2, 6, 'SameValueZero')).toBe(6);
     });
 
     it('should work with negative fromIndex (array-like)', function() {
+      expect.assertions(2);
       expect(indexOf(testAL, 2, -5, 'SameValueZero')).toBe(6);
       expect(indexOf(testAL, 2, -11, 'SameValueZero')).toBe(0);
     });
 
     it('should work with fromIndex being greater than the length (array-like)', function() {
+      expect.assertions(1);
       expect(indexOf(testAL, 0, 20, 'SameValueZero')).toBe(-1);
     });
 
     it('should work with fromIndex being negative and greater than the length (array-like)', function() {
+      expect.assertions(1);
       expect(indexOf(testAL, 'hej', -20, 'SameValueZero')).toBe(4);
     });
   });
@@ -363,36 +390,42 @@ describe('indexOf: SameValueZero', function() {
 describe('indexOf: SameValue', function() {
   let testSubject;
 
+  /* eslint-disable-next-line jest/no-hooks */
   beforeEach(function() {
     testSubject = [2, 3, undefinedIfNoSparseBug, true, 'hej', null, 2, false, 0, -0, NaN];
     delete testSubject[1];
   });
 
   it('should find the element', function() {
+    expect.assertions(1);
     const expected = 4;
     const actual = indexOf(testSubject, 'hej', 'SameValue');
     expect(actual).toBe(expected);
   });
 
   it('should not find the element', function() {
+    expect.assertions(1);
     const expected = -1;
     const actual = indexOf(testSubject, 'mus', 'SameValue');
     expect(actual).toBe(expected);
   });
 
   ifHasDenseUndefinedsIt('should find undefined as well', function() {
+    expect.assertions(1);
     const expected = -1;
     const actual = indexOf(testSubject, undefined, 'SameValue');
     expect(actual).not.toBe(expected);
   });
 
   ifHasDenseUndefinedsIt('should skip unset indexes', function() {
+    expect.assertions(1);
     const expected = 2;
     const actual = indexOf(testSubject, undefined, 'SameValue');
     expect(actual).toBe(expected);
   });
 
   it('should use a SameValue test', function() {
+    expect.assertions(4);
     let actual = indexOf(testSubject, null, 'SameValue');
     expect(actual).toBe(5);
 
@@ -407,25 +440,30 @@ describe('indexOf: SameValue', function() {
   });
 
   it('should skip the first if fromIndex is set', function() {
+    expect.assertions(3);
     expect(indexOf(testSubject, 2, 2, 'SameValue')).toBe(6);
     expect(indexOf(testSubject, 2, 0, 'SameValue')).toBe(0);
     expect(indexOf(testSubject, 2, 6, 'SameValue')).toBe(6);
   });
 
   it('should work with negative fromIndex', function() {
+    expect.assertions(2);
     expect(indexOf(testSubject, 2, -5, 'SameValue')).toBe(6);
     expect(indexOf(testSubject, 2, -11, 'SameValue')).toBe(0);
   });
 
   it('should work with fromIndex being greater than the length', function() {
+    expect.assertions(1);
     expect(indexOf(testSubject, 0, 20, 'SameValue')).toBe(-1);
   });
 
   it('should work with fromIndex being negative and greater than the length', function() {
+    expect.assertions(1);
     expect(indexOf(testSubject, 'hej', -20, 'SameValue')).toBe(4);
   });
 
   it('should work with object items', function() {
+    expect.assertions(6);
     const a = [];
     const b = {};
     const c = new Date();
@@ -441,6 +479,7 @@ describe('indexOf: SameValue', function() {
   describe('array-like', function ArrayLike() {
     let testAL;
 
+    /* eslint-disable-next-line jest/no-hooks */
     beforeEach(function beforeEach() {
       testAL = {};
       testSubject = [2, 3, undefinedIfNoSparseBug, true, 'hej', null, 2, false, 0, -0, NaN];
@@ -451,30 +490,35 @@ describe('indexOf: SameValue', function() {
     });
 
     it('should find the element (array-like)', function() {
+      expect.assertions(1);
       const expected = 4;
       const actual = indexOf(testAL, 'hej', 'SameValue');
       expect(actual).toBe(expected);
     });
 
     it('should not find the element (array-like)', function() {
+      expect.assertions(1);
       const expected = -1;
       const actual = indexOf(testAL, 'mus', 'SameValue');
       expect(actual).toBe(expected);
     });
 
     ifHasDenseUndefinedsIt('should find undefined as well (array-like)', function() {
+      expect.assertions(1);
       const expected = -1;
       const actual = indexOf(testAL, undefined, 'SameValue');
       expect(actual).not.toBe(expected);
     });
 
     ifHasDenseUndefinedsIt('should skip unset indexes (array-like)', function() {
+      expect.assertions(1);
       const expected = 2;
       const actual = indexOf(testAL, undefined, 'SameValue');
       expect(actual).toBe(expected);
     });
 
     it('should use a SameValue test (array-like)', function() {
+      expect.assertions(2);
       let actual = indexOf(testAL, null, 'SameValue');
       expect(actual).toBe(5);
 
@@ -483,21 +527,25 @@ describe('indexOf: SameValue', function() {
     });
 
     it('should skip the first if fromIndex is set (array-like)', function() {
+      expect.assertions(3);
       expect(indexOf(testAL, 2, 2, 'SameValue')).toBe(6);
       expect(indexOf(testAL, 2, 0, 'SameValue')).toBe(0);
       expect(indexOf(testAL, 2, 6, 'SameValue')).toBe(6);
     });
 
     it('should work with negative fromIndex (array-like)', function() {
+      expect.assertions(2);
       expect(indexOf(testAL, 2, -5, 'SameValue')).toBe(6);
       expect(indexOf(testAL, 2, -11, 'SameValue')).toBe(0);
     });
 
     it('should work with fromIndex being greater than the length (array-like)', function() {
+      expect.assertions(1);
       expect(indexOf(testAL, 0, 20, 'SameValue')).toBe(-1);
     });
 
     it('should work with fromIndex being negative and greater than the length (array-like)', function() {
+      expect.assertions(1);
       expect(indexOf(testAL, 'hej', -20, 'SameValue')).toBe(4);
     });
   });

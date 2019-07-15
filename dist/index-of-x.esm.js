@@ -1,3 +1,5 @@
+function _newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
+
 import numberIsNaN from 'is-nan-x';
 import isString from 'is-string';
 import isFalsey from 'is-falsey-x';
@@ -9,13 +11,11 @@ import findIndex from 'find-index-x';
 import calcFromIndex from 'calculate-from-index-x';
 import splitIfBoxedBug from 'split-if-boxed-bug-x';
 import attempt from 'attempt-x';
-
-let pIndexOf = typeof Array.prototype.indexOf === 'function' && Array.prototype.indexOf;
-
-let isWorking;
+var pIndexOf = typeof Array.prototype.indexOf === 'function' && Array.prototype.indexOf;
+var isWorking;
 
 if (pIndexOf) {
-  let res = attempt.call([0, 1], pIndexOf, 1, 2);
+  var res = attempt.call([0, 1], pIndexOf, 1, 2);
   isWorking = res.threw === false && res.value === -1;
 
   if (isWorking) {
@@ -29,11 +29,13 @@ if (pIndexOf) {
   }
 
   if (isWorking) {
-    const testArr = [];
+    var testArr = [];
     testArr.length = 2;
     /* eslint-disable-next-line no-void */
+
     testArr[1] = void 0;
     /* eslint-disable-next-line no-void */
+
     res = attempt.call(testArr, pIndexOf, void 0);
     isWorking = res.threw === false && res.value === 1;
   }
@@ -44,14 +46,10 @@ if (pIndexOf) {
   }
 
   if (isWorking) {
-    res = attempt.call(
-      (function getArgs() {
-        /* eslint-disable-next-line prefer-rest-params */
-        return arguments;
-      })('a', 'b', 'c'),
-      pIndexOf,
-      'c',
-    );
+    res = attempt.call(function getArgs() {
+      /* eslint-disable-next-line prefer-rest-params */
+      return arguments;
+    }('a', 'b', 'c'), pIndexOf, 'c');
     isWorking = res.threw === false && res.value === 2;
   }
 }
@@ -59,14 +57,16 @@ if (pIndexOf) {
 if (isWorking !== true) {
   pIndexOf = function $pIndexOf(searchElement) {
     /* eslint-disable-next-line babel/no-invalid-this */
-    const length = toLength(this.length);
+    var length = toLength(this.length);
 
     if (length < 1) {
       return -1;
     }
-
     /* eslint-disable-next-line prefer-rest-params */
-    let i = arguments[1];
+
+
+    var i = arguments[1];
+
     while (i < length) {
       /* eslint-disable-next-line babel/no-invalid-this */
       if (i in this && this[i] === searchElement) {
@@ -79,7 +79,6 @@ if (isWorking !== true) {
     return -1;
   };
 }
-
 /**
  * This method returns an index in the array, if an element in the array
  * satisfies the provided testing function. Otherwise -1 is returned.
@@ -91,9 +90,12 @@ if (isWorking !== true) {
  * @param {Function} extendFn - The comparison function to use.
  * @returns {number} Returns index of found element, otherwise -1.
  */
-const findIdxFrom = function findIndexFrom(array, searchElement, fromIndex, extendFn) {
-  let fIdx = fromIndex;
-  const length = toLength(array.length);
+
+
+var findIdxFrom = function findIndexFrom(array, searchElement, fromIndex, extendFn) {
+  var fIdx = fromIndex;
+  var length = toLength(array.length);
+
   while (fIdx < length) {
     if (fIdx in array && extendFn(array[fIdx], searchElement)) {
       return fIdx;
@@ -103,10 +105,9 @@ const findIdxFrom = function findIndexFrom(array, searchElement, fromIndex, exte
   }
 
   return -1;
-};
-
-// eslint-disable jsdoc/check-param-names
+}; // eslint-disable jsdoc/check-param-names
 // noinspection JSCommentMatchesSignature
+
 /**
  * This method returns the first index at which a given element can be found
  * in the array, or -1 if it is not present.
@@ -125,19 +126,24 @@ const findIdxFrom = function findIndexFrom(array, searchElement, fromIndex, exte
  * @returns {number} Returns index of found element, otherwise -1.
  */
 // eslint-enable jsdoc/check-param-names
+
+
 export default function indexOf(array, searchElement) {
-  const object = toObject(array);
-  const iterable = splitIfBoxedBug(object);
-  const length = toLength(iterable.length);
+  var _this = this;
+
+  var object = toObject(array);
+  var iterable = splitIfBoxedBug(object);
+  var length = toLength(iterable.length);
 
   if (length < 1) {
     return -1;
   }
 
-  const argLength = arguments.length;
+  var argLength = arguments.length;
   /* eslint-disable-next-line prefer-rest-params */
-  let extend = argLength > 2 && argLength > 3 ? arguments[3] : arguments[2];
-  let extendFn;
+
+  var extend = argLength > 2 && argLength > 3 ? arguments[3] : arguments[2];
+  var extendFn;
 
   if (isString(extend)) {
     extend = extend.toLowerCase();
@@ -149,7 +155,7 @@ export default function indexOf(array, searchElement) {
     }
   }
 
-  let fromIndex = 0;
+  var fromIndex = 0;
 
   if (extendFn && (searchElement === 0 || numberIsNaN(searchElement))) {
     if (argLength > 3) {
@@ -169,12 +175,14 @@ export default function indexOf(array, searchElement) {
       return findIdxFrom(iterable, searchElement, fromIndex, extendFn);
     }
 
-    return findIndex(iterable, (element, index) => {
+    return findIndex(iterable, function (element, index) {
+      _newArrowCheck(this, _this);
+
       return index in iterable && extendFn(searchElement, element);
-    });
+    }.bind(this));
   }
 
-  if (argLength > 3 || (argLength > 2 && isFalsey(extendFn))) {
+  if (argLength > 3 || argLength > 2 && isFalsey(extendFn)) {
     /* eslint-disable-next-line prefer-rest-params */
     fromIndex = calcFromIndex(iterable, arguments[2]);
 
@@ -189,3 +197,5 @@ export default function indexOf(array, searchElement) {
 
   return pIndexOf.call(iterable, searchElement, fromIndex);
 }
+
+//# sourceMappingURL=index-of-x.esm.js.map
