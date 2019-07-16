@@ -16,7 +16,6 @@ const itHasDoc = typeof document !== 'undefined' && document ? it : xit;
 describe('indexOf', function() {
   let testSubject;
 
-  /* eslint-disable-next-line jest/no-hooks */
   beforeEach(function() {
     testSubject = [2, 3, undefinedIfNoSparseBug, true, 'hej', null, 2, false, 0, -0, NaN];
     delete testSubject[1];
@@ -34,7 +33,6 @@ describe('indexOf', function() {
     }).toThrowErrorMatchingSnapshot();
 
     expect(function() {
-      /* eslint-disable-next-line no-void */
       indexOf(void 0);
     }).toThrowErrorMatchingSnapshot();
 
@@ -128,7 +126,6 @@ describe('indexOf', function() {
   describe('array-like', function ArrayLike() {
     let testAL;
 
-    /* eslint-disable-next-line jest/no-hooks */
     beforeEach(function beforeEach() {
       testAL = {};
       testSubject = [2, 3, undefinedIfNoSparseBug, true, 'hej', null, 2, false, 0, -0, NaN];
@@ -206,7 +203,6 @@ describe('indexOf', function() {
     it('should work with arguments', function() {
       expect.assertions(1);
       const obj = (function getArgs() {
-        /* eslint-disable-next-line prefer-rest-params */
         return arguments;
       })('a', 'b', 'c');
 
@@ -226,7 +222,6 @@ describe('indexOf', function() {
 describe('indexOf: SameValueZero', function() {
   let testSubject;
 
-  /* eslint-disable-next-line jest/no-hooks */
   beforeEach(function() {
     testSubject = [2, 3, undefinedIfNoSparseBug, true, 'hej', null, 2, false, 0, -0, NaN];
     delete testSubject[1];
@@ -315,7 +310,6 @@ describe('indexOf: SameValueZero', function() {
   describe('array-like', function ArrayLike() {
     let testAL;
 
-    /* eslint-disable-next-line jest/no-hooks */
     beforeEach(function beforeEach() {
       testAL = {};
       testSubject = [2, 3, undefinedIfNoSparseBug, true, 'hej', null, 2, false, 0, -0, NaN];
@@ -390,7 +384,6 @@ describe('indexOf: SameValueZero', function() {
 describe('indexOf: SameValue', function() {
   let testSubject;
 
-  /* eslint-disable-next-line jest/no-hooks */
   beforeEach(function() {
     testSubject = [2, 3, undefinedIfNoSparseBug, true, 'hej', null, 2, false, 0, -0, NaN];
     delete testSubject[1];
@@ -479,7 +472,6 @@ describe('indexOf: SameValue', function() {
   describe('array-like', function ArrayLike() {
     let testAL;
 
-    /* eslint-disable-next-line jest/no-hooks */
     beforeEach(function beforeEach() {
       testAL = {};
       testSubject = [2, 3, undefinedIfNoSparseBug, true, 'hej', null, 2, false, 0, -0, NaN];
