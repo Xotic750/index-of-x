@@ -2,13 +2,13 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2015-2017",
-  "date": "2019-07-17T18:01:42.280Z",
+  "date": "2019-07-17T19:26:28.385Z",
   "describe": "",
   "description": "An extended ES6 indexOf.",
   "file": "index-of-x.js",
-  "hash": "9e110d17d4ba847cbe16",
+  "hash": "26d977f3e9d57c506590",
   "license": "MIT",
-  "version": "3.0.4"
+  "version": "3.0.5"
 }
 */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -120,7 +120,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -131,7 +131,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 var toStr = Object.prototype.toString;
-var hasSymbols = __webpack_require__(5)();
+var hasSymbols = __webpack_require__(4)();
 
 if (hasSymbols) {
 	var symToStr = Symbol.prototype.toString;
@@ -193,15 +193,6 @@ module.exports = function isPrimitive(val) {
 
 "use strict";
 
-module.exports = 9007199254740991;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var strValue = String.prototype.valueOf;
 var tryStringObject = function tryStringObject(value) {
@@ -224,7 +215,7 @@ module.exports = function isString(value) {
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -251,14 +242,14 @@ module.exports = function isDateObject(value) {
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {
 
 var origSymbol = global.Symbol;
-var hasSymbolSham = __webpack_require__(7);
+var hasSymbolSham = __webpack_require__(6);
 
 module.exports = function hasNativeSymbols() {
 	if (typeof origSymbol !== 'function') { return false; }
@@ -269,10 +260,10 @@ module.exports = function hasNativeSymbols() {
 	return hasSymbolSham();
 };
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5)))
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports) {
 
 var g;
@@ -298,7 +289,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -347,7 +338,7 @@ module.exports = function hasSymbols() {
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -371,38 +362,8 @@ var is_nan_x_esm_isNaN = function isNaN(value) {
 
 
 // EXTERNAL MODULE: ./node_modules/is-string/index.js
-var is_string = __webpack_require__(3);
+var is_string = __webpack_require__(2);
 var is_string_default = /*#__PURE__*/__webpack_require__.n(is_string);
-
-// CONCATENATED MODULE: ./node_modules/to-boolean-x/dist/to-boolean-x.esm.js
-/**
- * The abstract operation ToBoolean converts argument to a value of type Boolean.
- *
- * @param {*} [value] - The value to be converted.
- * @returns {boolean} 'true' if value is truthy; otherwise 'false'.
- */
-var toBoolean = function toBoolean(value) {
-  return !!value;
-};
-
-/* harmony default export */ var to_boolean_x_esm = (toBoolean);
-
-
-// CONCATENATED MODULE: ./node_modules/is-falsey-x/dist/is-falsey-x.esm.js
-
-/**
- * This method tests if a given value is falsey.
- *
- * @param {*} [value] - The value to test.
- * @returns {boolean} `true` if the value is falsey: otherwise `false`.
- */
-
-var is_falsey_x_esm_isFalsey = function isFalsey(value) {
-  return !to_boolean_x_esm(value);
-};
-
-/* harmony default export */ var is_falsey_x_esm = (is_falsey_x_esm_isFalsey);
-
 
 // CONCATENATED MODULE: ./node_modules/is-nil-x/dist/is-nil-x.esm.js
 /**
@@ -525,8 +486,22 @@ var is_primitive = __webpack_require__(1);
 var is_primitive_default = /*#__PURE__*/__webpack_require__.n(is_primitive);
 
 // EXTERNAL MODULE: ./node_modules/is-date-object/index.js
-var is_date_object = __webpack_require__(4);
+var is_date_object = __webpack_require__(3);
 var is_date_object_default = /*#__PURE__*/__webpack_require__.n(is_date_object);
+
+// CONCATENATED MODULE: ./node_modules/to-boolean-x/dist/to-boolean-x.esm.js
+/**
+ * The abstract operation ToBoolean converts argument to a value of type Boolean.
+ *
+ * @param {*} [value] - The value to be converted.
+ * @returns {boolean} 'true' if value is truthy; otherwise 'false'.
+ */
+var toBoolean = function toBoolean(value) {
+  return !!value;
+};
+
+/* harmony default export */ var to_boolean_x_esm = (toBoolean);
+
 
 // CONCATENATED MODULE: ./node_modules/to-string-tag-x/dist/to-string-tag-x.esm.js
 var nativeObjectToString = {}.toString;
@@ -1655,13 +1630,9 @@ var to_integer_x_esm_toInteger2018 = function toInteger2018(value) {
 /* harmony default export */ var to_integer_x_esm = (to_integer_x_esm_toInteger2018);
 
 
-// EXTERNAL MODULE: ./node_modules/max-safe-integer/index.js
-var max_safe_integer = __webpack_require__(2);
-var max_safe_integer_default = /*#__PURE__*/__webpack_require__.n(max_safe_integer);
-
 // CONCATENATED MODULE: ./node_modules/to-length-x/dist/to-length-x.esm.js
 
-
+var MAX_SAFE_INTEGER = 9007199254740991;
 /**
  * Converts `value` to an integer suitable for use as the length of an
  * array-like object. (ES2016).
@@ -1677,8 +1648,8 @@ function toLength2016(value) {
     return 0;
   }
 
-  if (len > max_safe_integer_default.a) {
-    return max_safe_integer_default.a;
+  if (len > MAX_SAFE_INTEGER) {
+    return MAX_SAFE_INTEGER;
   }
 
   return len;
@@ -1698,8 +1669,8 @@ var to_length_x_esm_toLength2018 = function toLength2018(value) {
     return 0;
   }
 
-  if (len > max_safe_integer_default.a) {
-    return max_safe_integer_default.a;
+  if (len > MAX_SAFE_INTEGER) {
+    return MAX_SAFE_INTEGER;
   }
 
   return len;
@@ -1985,8 +1956,8 @@ var is_integer_x_esm_isInteger = function isInteger(value) {
 
 // CONCATENATED MODULE: ./node_modules/is-safe-integer-x/dist/is-safe-integer-x.esm.js
 
-var MAX_SAFE_INTEGER = 9007199254740991;
-var MIN_SAFE_INTEGER = -MAX_SAFE_INTEGER;
+var is_safe_integer_x_esm_MAX_SAFE_INTEGER = 9007199254740991;
+var MIN_SAFE_INTEGER = -is_safe_integer_x_esm_MAX_SAFE_INTEGER;
 /**
  * This method determines whether the passed value is a safe integer.
  *
@@ -2000,7 +1971,7 @@ var MIN_SAFE_INTEGER = -MAX_SAFE_INTEGER;
  */
 
 var is_safe_integer_x_esm_isSafeInteger = function isSafeInteger(value) {
-  return is_integer_x_esm(value) && value >= MIN_SAFE_INTEGER && value <= MAX_SAFE_INTEGER;
+  return is_integer_x_esm(value) && value >= MIN_SAFE_INTEGER && value <= is_safe_integer_x_esm_MAX_SAFE_INTEGER;
 };
 
 /* harmony default export */ var is_safe_integer_x_esm = (is_safe_integer_x_esm_isSafeInteger);
@@ -2088,7 +2059,9 @@ function index_of_x_esm_newArrowCheck(innerThis, boundThis) { if (innerThis !== 
 
 
 
+/** @type {BooleanConstructor} */
 
+var index_of_x_esm_castBoolean = true.constructor;
 var pIndexOf = typeof Array.prototype.indexOf === 'function' && Array.prototype.indexOf;
 var index_of_x_esm_isWorking;
 
@@ -2260,7 +2233,7 @@ var index_of_x_esm_indexOf = function indexOf(array, searchElement) {
     }.bind(this));
   }
 
-  if (argLength > 3 || argLength > 2 && is_falsey_x_esm(extendFn)) {
+  if (argLength > 3 || argLength > 2 && index_of_x_esm_castBoolean(extendFn) === false) {
     /* eslint-disable-next-line prefer-rest-params */
     fromIndex = calculate_from_index_x_esm(iterable, arguments[2]);
 

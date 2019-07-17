@@ -2,7 +2,6 @@ function _newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { t
 
 import numberIsNaN from 'is-nan-x';
 import isString from 'is-string';
-import isFalsey from 'is-falsey-x';
 import toObject from 'to-object-x';
 import toLength from 'to-length-x';
 import sameValueZero from 'same-value-zero-x';
@@ -11,6 +10,9 @@ import findIndex from 'find-index-x';
 import calcFromIndex from 'calculate-from-index-x';
 import splitIfBoxedBug from 'split-if-boxed-bug-x';
 import attempt from 'attempt-x';
+/** @type {BooleanConstructor} */
+
+var castBoolean = true.constructor;
 var pIndexOf = typeof Array.prototype.indexOf === 'function' && Array.prototype.indexOf;
 var isWorking;
 
@@ -182,7 +184,7 @@ var indexOf = function indexOf(array, searchElement) {
     }.bind(this));
   }
 
-  if (argLength > 3 || argLength > 2 && isFalsey(extendFn)) {
+  if (argLength > 3 || argLength > 2 && castBoolean(extendFn) === false) {
     /* eslint-disable-next-line prefer-rest-params */
     fromIndex = calcFromIndex(iterable, arguments[2]);
 
