@@ -2,13 +2,13 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2015-2017",
-  "date": "2019-07-16T21:57:44.128Z",
+  "date": "2019-07-17T18:01:42.280Z",
   "describe": "",
   "description": "An extended ES6 indexOf.",
   "file": "index-of-x.js",
-  "hash": "26ba5138781fbea233a5",
+  "hash": "9e110d17d4ba847cbe16",
   "license": "MIT",
-  "version": "3.0.3"
+  "version": "3.0.4"
 }
 */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -362,10 +362,12 @@ __webpack_require__.r(__webpack_exports__);
  * @returns {boolean} `true` if the given value is NaN and its type is Number;
  *  otherwise, `false`.
  */
-function is_nan_x_esm_isNaN(value) {
+var is_nan_x_esm_isNaN = function isNaN(value) {
   /* eslint-disable-next-line no-self-compare */
   return value !== value;
-}
+};
+
+/* harmony default export */ var is_nan_x_esm = (is_nan_x_esm_isNaN);
 
 
 // EXTERNAL MODULE: ./node_modules/is-string/index.js
@@ -379,9 +381,11 @@ var is_string_default = /*#__PURE__*/__webpack_require__.n(is_string);
  * @param {*} [value] - The value to be converted.
  * @returns {boolean} 'true' if value is truthy; otherwise 'false'.
  */
-function toBoolean(value) {
+var toBoolean = function toBoolean(value) {
   return !!value;
-}
+};
+
+/* harmony default export */ var to_boolean_x_esm = (toBoolean);
 
 
 // CONCATENATED MODULE: ./node_modules/is-falsey-x/dist/is-falsey-x.esm.js
@@ -393,9 +397,11 @@ function toBoolean(value) {
  * @returns {boolean} `true` if the value is falsey: otherwise `false`.
  */
 
-function isFalsey(value) {
-  return !toBoolean(value);
-}
+var is_falsey_x_esm_isFalsey = function isFalsey(value) {
+  return !to_boolean_x_esm(value);
+};
+
+/* harmony default export */ var is_falsey_x_esm = (is_falsey_x_esm_isFalsey);
 
 
 // CONCATENATED MODULE: ./node_modules/is-nil-x/dist/is-nil-x.esm.js
@@ -405,10 +411,12 @@ function isFalsey(value) {
  * @param {*} [value] - The value to check.
  * @returns {boolean} Returns `true` if `value` is nullish, else `false`.
  */
-function isNil(value) {
+var isNil = function isNil(value) {
   /* eslint-disable-next-line lodash/prefer-is-nil */
   return value === null || typeof value === 'undefined';
-}
+};
+
+/* harmony default export */ var is_nil_x_esm = (isNil);
 
 
 // CONCATENATED MODULE: ./node_modules/require-object-coercible-x/dist/require-object-coercible-x.esm.js
@@ -422,13 +430,15 @@ function isNil(value) {
  * @returns {string} The `value`.
  */
 
-function requireObjectCoercible(value) {
-  if (isNil(value)) {
+var require_object_coercible_x_esm_requireObjectCoercible = function requireObjectCoercible(value) {
+  if (is_nil_x_esm(value)) {
     throw new TypeError("Cannot call method on ".concat(value));
   }
 
   return value;
-}
+};
+
+/* harmony default export */ var require_object_coercible_x_esm = (require_object_coercible_x_esm_requireObjectCoercible);
 
 
 // CONCATENATED MODULE: ./node_modules/to-object-x/dist/to-object-x.esm.js
@@ -443,9 +453,11 @@ var castObject = {}.constructor;
  * @returns {!object} The `value` converted to an object.
  */
 
-function toObject(value) {
-  return castObject(requireObjectCoercible(value));
-}
+var to_object_x_esm_toObject = function toObject(value) {
+  return castObject(require_object_coercible_x_esm(value));
+};
+
+/* harmony default export */ var to_object_x_esm = (to_object_x_esm_toObject);
 
 
 // EXTERNAL MODULE: ./node_modules/is-symbol/index.js
@@ -462,7 +474,7 @@ var is_symbol_default = /*#__PURE__*/__webpack_require__.n(is_symbol);
  * @param {...*} [args] - The arguments to invoke the function with.
  * @returns {object} Returns an object of the result.
  */
-function attempt(fn) {
+var attempt = function attempt(fn) {
   try {
     for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
@@ -480,7 +492,9 @@ function attempt(fn) {
       value: e
     };
   }
-}
+};
+
+/* harmony default export */ var attempt_x_esm = (attempt);
 
 
 // CONCATENATED MODULE: ./node_modules/has-symbol-support-x/dist/has-symbol-support-x.esm.js
@@ -490,7 +504,7 @@ function _newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { t
 
 
 
-var hasSymbolSupport = attempt(function () {
+var hasSymbolSupport = attempt_x_esm(function () {
   _newArrowCheck(this, has_symbol_support_x_esm_this);
 
   /* eslint-disable-next-line compat/compat */
@@ -524,7 +538,7 @@ var nativeObjectToString = {}.toString;
  * @returns {string} The object type string.
  */
 
-function toStringTag(value) {
+var toStringTag = function toStringTag(value) {
   if (value === null) {
     return '[object Null]';
   }
@@ -534,7 +548,9 @@ function toStringTag(value) {
   }
 
   return nativeObjectToString.call(value);
-}
+};
+
+/* harmony default export */ var to_string_tag_x_esm = (toStringTag);
 
 
 // CONCATENATED MODULE: ./node_modules/has-to-string-tag-x/dist/has-to-string-tag-x.esm.js
@@ -564,13 +580,15 @@ var castString = ERROR_MESSAGE.constructor;
  * @returns {string} The converted value.
  */
 
-function ToString(value) {
+var to_string_x_esm_ToString = function ToString(value) {
   if (is_symbol_default()(value)) {
     throw new TypeError(ERROR_MESSAGE);
   }
 
   return castString(value);
-}
+};
+
+/* harmony default export */ var to_string_x_esm = (to_string_x_esm_ToString);
 
 
 // CONCATENATED MODULE: ./node_modules/require-coercible-to-string-x/dist/require-coercible-to-string-x.esm.js
@@ -584,9 +602,11 @@ function ToString(value) {
  * @returns {string} The value as a string.
  */
 
-function requireCoercibleToString(value) {
-  return ToString(requireObjectCoercible(value));
-}
+var require_coercible_to_string_x_esm_requireCoercibleToString = function requireCoercibleToString(value) {
+  return to_string_x_esm(require_object_coercible_x_esm(value));
+};
+
+/* harmony default export */ var require_coercible_to_string_x_esm = (require_coercible_to_string_x_esm_requireCoercibleToString);
 
 
 // CONCATENATED MODULE: ./node_modules/white-space-x/dist/white-space-x.esm.js
@@ -919,7 +939,7 @@ var replace = EMPTY_STRING.replace;
  */
 
 function trimLeft2016(string) {
-  return replace.call(requireCoercibleToString(string), reLeft2016, EMPTY_STRING);
+  return replace.call(require_coercible_to_string_x_esm(string), reLeft2016, EMPTY_STRING);
 }
 /**
  * This method removes whitespace from the left end of a string. (ES2018).
@@ -929,9 +949,11 @@ function trimLeft2016(string) {
  * @returns {string} The left trimmed string.
  */
 
-function trimLeft2018(string) {
-  return replace.call(requireCoercibleToString(string), reLeft, EMPTY_STRING);
-}
+var trim_left_x_esm_trimLeft2018 = function trimLeft2018(string) {
+  return replace.call(require_coercible_to_string_x_esm(string), reLeft, EMPTY_STRING);
+};
+
+/* harmony default export */ var trim_left_x_esm = (trim_left_x_esm_trimLeft2018);
 
 
 // CONCATENATED MODULE: ./node_modules/trim-right-x/dist/trim-right-x.esm.js
@@ -951,7 +973,7 @@ var trim_right_x_esm_replace = trim_right_x_esm_EMPTY_STRING.replace;
  */
 
 function trimRight2016(string) {
-  return trim_right_x_esm_replace.call(requireCoercibleToString(string), reRight2016, trim_right_x_esm_EMPTY_STRING);
+  return trim_right_x_esm_replace.call(require_coercible_to_string_x_esm(string), reRight2016, trim_right_x_esm_EMPTY_STRING);
 }
 /**
  * This method removes whitespace from the right end of a string. (ES2018).
@@ -961,9 +983,11 @@ function trimRight2016(string) {
  * @returns {string} The right trimmed string.
  */
 
-function trimRight2018(string) {
-  return trim_right_x_esm_replace.call(requireCoercibleToString(string), reRight2018, trim_right_x_esm_EMPTY_STRING);
-}
+var trim_right_x_esm_trimRight2018 = function trimRight2018(string) {
+  return trim_right_x_esm_replace.call(require_coercible_to_string_x_esm(string), reRight2018, trim_right_x_esm_EMPTY_STRING);
+};
+
+/* harmony default export */ var trim_right_x_esm = (trim_right_x_esm_trimRight2018);
 
 
 // CONCATENATED MODULE: ./node_modules/trim-x/dist/trim-x.esm.js
@@ -990,9 +1014,11 @@ function trim2016(string) {
  * @returns {string} The trimmed string.
  */
 
-function trim2018(string) {
-  return trimLeft2018(trimRight2018(string));
-}
+var trim_x_esm_trim2018 = function trim2018(string) {
+  return trim_left_x_esm(trim_right_x_esm(string));
+};
+
+/* harmony default export */ var trim_x_esm = (trim_x_esm_trim2018);
 
 
 // CONCATENATED MODULE: ./node_modules/normalize-space-x/dist/normalize-space-x.esm.js
@@ -1025,9 +1051,11 @@ function normalizeSpace2016(string) {
  * @throws {TypeError} If string is null or undefined or not coercible.
  */
 
-function normalizeSpace2018(string) {
-  return normalize_space_x_esm_replace.call(trim2018(string), reNormalize2018, SPACE);
-}
+var normalize_space_x_esm_normalizeSpace2018 = function normalizeSpace2018(string) {
+  return normalize_space_x_esm_replace.call(trim_x_esm(string), reNormalize2018, SPACE);
+};
+
+/* harmony default export */ var normalize_space_x_esm = (normalize_space_x_esm_normalizeSpace2018);
 
 
 // CONCATENATED MODULE: ./node_modules/replace-comments-x/dist/replace-comments-x.esm.js
@@ -1046,9 +1074,11 @@ var replace_comments_x_esm_replace = replace_comments_x_esm_EMPTY_STRING.replace
  * @returns {string} The new string with the comments replaced.
  */
 
-function replaceComments(string, replacement) {
-  return replace_comments_x_esm_replace.call(requireCoercibleToString(string), STRIP_COMMENTS, arguments.length > 1 ? ToString(replacement) : replace_comments_x_esm_EMPTY_STRING);
-}
+var replace_comments_x_esm_replaceComments = function replaceComments(string, replacement) {
+  return replace_comments_x_esm_replace.call(require_coercible_to_string_x_esm(string), STRIP_COMMENTS, arguments.length > 1 ? to_string_x_esm(replacement) : replace_comments_x_esm_EMPTY_STRING);
+};
+
+/* harmony default export */ var replace_comments_x_esm = (replace_comments_x_esm_replaceComments);
 
 
 // CONCATENATED MODULE: ./node_modules/is-function-x/dist/is-function-x.esm.js
@@ -1063,27 +1093,28 @@ function is_function_x_esm_newArrowCheck(innerThis, boundThis) { if (innerThis !
 
 
 
-
+var FunctionCtr = attempt_x_esm.constructor;
+var castBoolean = true.constructor;
 var is_function_x_esm_SPACE = ' ';
-var fToString = Function.prototype.toString;
+var fToString = attempt_x_esm.toString;
 var funcTag = '[object Function]';
 var genTag = '[object GeneratorFunction]';
 var asyncTag = '[object AsyncFunction]';
 var ctrRx = /^class /;
 var test = ctrRx.test;
-var hasNativeClass = attempt(function () {
+var hasNativeClass = attempt_x_esm(function () {
   is_function_x_esm_newArrowCheck(this, is_function_x_esm_this);
 
-  /* eslint-disable-next-line no-new-func */
-  return Function('"use strict"; return class My {};')();
+  /* eslint-disable-next-line babel/new-cap */
+  return FunctionCtr('"use strict"; return class My {};')();
 }.bind(undefined)).threw === false;
 
 var testClassstring = function _testClassstring(value) {
-  return test.call(ctrRx, normalizeSpace2018(replaceComments(fToString.call(value), is_function_x_esm_SPACE)));
+  return test.call(ctrRx, normalize_space_x_esm(replace_comments_x_esm(fToString.call(value), is_function_x_esm_SPACE)));
 };
 
 var isES6ClassFn = function isES6ClassFunc(value) {
-  var result = attempt(testClassstring, value);
+  var result = attempt_x_esm(testClassstring, value);
   return result.threw === false && result.value;
 };
 /**
@@ -1102,7 +1133,7 @@ var tryFuncToString = function funcToString(value, allowClass) {
     return false;
   }
 
-  return attempt.call(value, fToString).threw === false;
+  return attempt_x_esm.call(value, fToString).threw === false;
 };
 /**
  * Checks if `value` is classified as a `Function` object.
@@ -1114,22 +1145,24 @@ var tryFuncToString = function funcToString(value, allowClass) {
  */
 
 
-function isFunction(value, allowClass) {
+var is_function_x_esm_isFunction = function isFunction(value, allowClass) {
   if (is_primitive_default()(value)) {
     return false;
   }
 
   if (has_to_string_tag_x_esm) {
-    return tryFuncToString(value, toBoolean(allowClass));
+    return tryFuncToString(value, to_boolean_x_esm(allowClass));
   }
 
-  if (hasNativeClass && isFalsey(allowClass) && isES6ClassFn(value)) {
+  if (hasNativeClass && castBoolean(allowClass) === false && isES6ClassFn(value)) {
     return false;
   }
 
-  var strTag = toStringTag(value);
+  var strTag = to_string_tag_x_esm(value);
   return strTag === funcTag || strTag === genTag || strTag === asyncTag;
-}
+};
+
+/* harmony default export */ var is_function_x_esm = (is_function_x_esm_isFunction);
 
 
 // CONCATENATED MODULE: ./node_modules/to-primitive-x/dist/to-primitive-x.esm.js
@@ -1170,7 +1203,7 @@ var orderLength = 2;
  */
 
 var ordinaryToPrimitive = function _ordinaryToPrimitive(ordinary, hint) {
-  requireObjectCoercible(ordinary);
+  require_object_coercible_x_esm(ordinary);
 
   if (typeof hint !== 'string' || hint !== NUMBER && hint !== STRING) {
     throw new TypeError('hint must be "string" or "number"');
@@ -1183,7 +1216,7 @@ var ordinaryToPrimitive = function _ordinaryToPrimitive(ordinary, hint) {
   for (var i = ZERO; i < orderLength; i += ONE) {
     method = ordinary[methodNames[i]];
 
-    if (isFunction(method)) {
+    if (is_function_x_esm(method)) {
       result = method.call(ordinary);
 
       if (is_primitive_default()(result)) {
@@ -1204,8 +1237,8 @@ var ordinaryToPrimitive = function _ordinaryToPrimitive(ordinary, hint) {
 var getMethod = function _getMethod(object, property) {
   var func = object[property];
 
-  if (isNil(func) === false) {
-    if (isFunction(func) === false) {
+  if (is_nil_x_esm(func) === false) {
+    if (is_function_x_esm(func) === false) {
       throw new TypeError("".concat(func, " returned for property ").concat(property, " of object ").concat(object, " is not a function"));
     }
 
@@ -1274,7 +1307,7 @@ var to_primitive_x_esm_getExoticToPrim = function getExoticToPrim(value) {
  */
 
 
-function toPrimitive(input, preferredType) {
+var to_primitive_x_esm_toPrimitive = function toPrimitive(input, preferredType) {
   if (is_primitive_default()(input)) {
     return input;
   }
@@ -1294,7 +1327,9 @@ function toPrimitive(input, preferredType) {
 
   var newHint = hint === DEFAULT && (is_date_object_default()(input) || is_symbol_default()(input)) ? STRING : hint;
   return ordinaryToPrimitive(input, newHint === DEFAULT ? NUMBER : newHint);
-}
+};
+
+/* harmony default export */ var to_primitive_x_esm = (to_primitive_x_esm_toPrimitive);
 
 
 // CONCATENATED MODULE: ./node_modules/nan-x/dist/nan-x.esm.js
@@ -1338,7 +1373,7 @@ var parse_int_x_esm_test = hexRegex.test;
  */
 
 function parseInt2016(string, radix) {
-  var str = trimLeft2016(ToString(string));
+  var str = trimLeft2016(to_string_x_esm(string));
   return nativeParseInt(str, castNumber(radix) || (parse_int_x_esm_test.call(hexRegex, str) ? 16 : 10));
 }
 /**
@@ -1359,15 +1394,17 @@ function parseInt2016(string, radix) {
  *  character cannot be converted to a number, NaN is returned.
  */
 
-function parseInt2018(string, radix) {
-  var str = trimLeft2018(ToString(string));
+var parse_int_x_esm_parseInt2018 = function parseInt2018(string, radix) {
+  var str = trim_left_x_esm(to_string_x_esm(string));
 
   if (charAt.call(str, 0) === "\u180E") {
     return nan_x_esm;
   }
 
   return nativeParseInt(str, castNumber(radix) || (parse_int_x_esm_test.call(hexRegex, str) ? 16 : 10));
-}
+};
+
+/* harmony default export */ var parse_int_x_esm = (parse_int_x_esm_parseInt2018);
 
 
 // CONCATENATED MODULE: ./node_modules/to-number-x/dist/to-number-x.esm.js
@@ -1427,7 +1464,7 @@ var isInvalidHexLiteral = function _isInvalidHexLiteral(value) {
 
 
 function toNumber2016(argument) {
-  var value = toPrimitive(argument, Number);
+  var value = to_primitive_x_esm(argument, Number);
 
   if (is_symbol_default()(value)) {
     throw new TypeError(to_number_x_esm_ERROR_MESSAGE);
@@ -1463,8 +1500,8 @@ function toNumber2016(argument) {
  * @returns {*} The argument converted to a number.
  */
 
-function toNumber2018(argument) {
-  var value = toPrimitive(argument, to_number_x_esm_castNumber);
+var to_number_x_esm_toNumber2018 = function toNumber2018(argument) {
+  var value = to_primitive_x_esm(argument, to_number_x_esm_castNumber);
 
   if (is_symbol_default()(value)) {
     throw new TypeError(to_number_x_esm_ERROR_MESSAGE);
@@ -1472,18 +1509,18 @@ function toNumber2018(argument) {
 
   if (typeof value === 'string') {
     if (isBinary(value)) {
-      return toNumber2018(parseInt2018(pStrSlice.call(value, testCharsCount), binaryRadix));
+      return toNumber2018(parse_int_x_esm(pStrSlice.call(value, testCharsCount), binaryRadix));
     }
 
     if (isOctal(value)) {
-      return toNumber2018(parseInt2018(pStrSlice.call(value, testCharsCount), octalRadix));
+      return toNumber2018(parse_int_x_esm(pStrSlice.call(value, testCharsCount), octalRadix));
     }
 
     if (hasNonWS2018(value) || isInvalidHexLiteral(value)) {
       return nan_x_esm;
     }
 
-    var trimmed = trim2018(value);
+    var trimmed = trim_x_esm(value);
 
     if (trimmed !== value) {
       return toNumber2018(trimmed);
@@ -1491,7 +1528,9 @@ function toNumber2018(argument) {
   }
 
   return to_number_x_esm_castNumber(value);
-}
+};
+
+/* harmony default export */ var to_number_x_esm = (to_number_x_esm_toNumber2018);
 
 
 // CONCATENATED MODULE: ./node_modules/infinity-x/dist/infinity-x.esm.js
@@ -1513,9 +1552,11 @@ function toNumber2018(argument) {
  * @returns {boolean} A Boolean indicating whether or not the given value is a finite number.
  */
 
-function is_finite_x_esm_isFinite(number) {
-  return typeof number === 'number' && is_nan_x_esm_isNaN(number) === false && number !== infinity_x_esm && number !== -infinity_x_esm;
-}
+var is_finite_x_esm_isFinite = function isFinite(number) {
+  return typeof number === 'number' && is_nan_x_esm(number) === false && number !== infinity_x_esm && number !== -infinity_x_esm;
+};
+
+/* harmony default export */ var is_finite_x_esm = (is_finite_x_esm_isFinite);
 
 
 // CONCATENATED MODULE: ./node_modules/math-sign-x/dist/math-sign-x.esm.js
@@ -1534,7 +1575,7 @@ function is_finite_x_esm_isFinite(number) {
 function sign2016(x) {
   var n = toNumber2016(x);
 
-  if (n === 0 || is_nan_x_esm_isNaN(n)) {
+  if (n === 0 || is_nan_x_esm(n)) {
     return n;
   }
 
@@ -1550,15 +1591,17 @@ function sign2016(x) {
  * return 1, -1, 0 or -0 respectively. Otherwise, NaN is returned.
  */
 
-function sign2018(x) {
-  var n = toNumber2018(x);
+var math_sign_x_esm_sign2018 = function sign2018(x) {
+  var n = to_number_x_esm(x);
 
-  if (n === 0 || is_nan_x_esm_isNaN(n)) {
+  if (n === 0 || is_nan_x_esm(n)) {
     return n;
   }
 
   return n > 0 ? 1 : -1;
-}
+};
+
+/* harmony default export */ var math_sign_x_esm = (math_sign_x_esm_sign2018);
 
 
 // CONCATENATED MODULE: ./node_modules/to-integer-x/dist/to-integer-x.esm.js
@@ -1578,11 +1621,11 @@ var abs = Math.abs,
 function toInteger2016(value) {
   var number = toNumber2016(value);
 
-  if (is_nan_x_esm_isNaN(number)) {
+  if (is_nan_x_esm(number)) {
     return 0;
   }
 
-  if (number === 0 || is_finite_x_esm_isFinite(number) === false) {
+  if (number === 0 || is_finite_x_esm(number) === false) {
     return number;
   }
 
@@ -1595,19 +1638,21 @@ function toInteger2016(value) {
  * @returns {number} Returns the converted integer.
  */
 
-function toInteger2018(value) {
-  var number = toNumber2018(value);
+var to_integer_x_esm_toInteger2018 = function toInteger2018(value) {
+  var number = to_number_x_esm(value);
 
-  if (is_nan_x_esm_isNaN(number)) {
+  if (is_nan_x_esm(number)) {
     return 0;
   }
 
-  if (number === 0 || is_finite_x_esm_isFinite(number) === false) {
+  if (number === 0 || is_finite_x_esm(number) === false) {
     return number;
   }
 
-  return sign2018(number) * floor(abs(number));
-}
+  return math_sign_x_esm(number) * floor(abs(number));
+};
+
+/* harmony default export */ var to_integer_x_esm = (to_integer_x_esm_toInteger2018);
 
 
 // EXTERNAL MODULE: ./node_modules/max-safe-integer/index.js
@@ -1646,8 +1691,8 @@ function toLength2016(value) {
  * @returns {number} Returns the converted integer.
  */
 
-function toLength2018(value) {
-  var len = toInteger2018(value); // includes converting -0 to +0
+var to_length_x_esm_toLength2018 = function toLength2018(value) {
+  var len = to_integer_x_esm(value); // includes converting -0 to +0
 
   if (len <= 0) {
     return 0;
@@ -1658,7 +1703,9 @@ function toLength2018(value) {
   }
 
   return len;
-}
+};
+
+/* harmony default export */ var to_length_x_esm = (to_length_x_esm_toLength2018);
 
 
 // CONCATENATED MODULE: ./node_modules/same-value-x/dist/same-value-x.esm.js
@@ -1673,7 +1720,7 @@ function toLength2018(value) {
  *  the same value.
  */
 
-function sameValue(value1, value2) {
+var same_value_x_esm_sameValue = function sameValue(value1, value2) {
   if (value1 === 0 && value2 === 0) {
     return 1 / value1 === 1 / value2;
   }
@@ -1682,8 +1729,10 @@ function sameValue(value1, value2) {
     return true;
   }
 
-  return is_nan_x_esm_isNaN(value1) && is_nan_x_esm_isNaN(value2);
-}
+  return is_nan_x_esm(value1) && is_nan_x_esm(value2);
+};
+
+/* harmony default export */ var same_value_x_esm = (same_value_x_esm_sameValue);
 
 
 // CONCATENATED MODULE: ./node_modules/same-value-zero-x/dist/same-value-zero-x.esm.js
@@ -1699,9 +1748,11 @@ function sameValue(value1, value2) {
  * are the same value.
  */
 
-function sameValueZero(x, y) {
-  return x === y || sameValue(x, y);
-}
+var same_value_zero_x_esm_sameValueZero = function sameValueZero(x, y) {
+  return x === y || same_value_x_esm(x, y);
+};
+
+/* harmony default export */ var same_value_zero_x_esm = (same_value_zero_x_esm_sameValueZero);
 
 
 // CONCATENATED MODULE: ./node_modules/to-string-symbols-supported-x/dist/to-string-symbols-supported-x.esm.js
@@ -1724,9 +1775,11 @@ var to_string_symbols_supported_x_esm_castString = ''.constructor;
  * @returns {string} The converted value.
  */
 
-function toStringSymbolsSupported(value) {
+var toStringSymbolsSupported = function toStringSymbolsSupported(value) {
   return isSymbolFn && isSymbolFn(value) ? pToString.call(value) : to_string_symbols_supported_x_esm_castString(value);
-}
+};
+
+/* harmony default export */ var to_string_symbols_supported_x_esm = (toStringSymbolsSupported);
 
 
 // CONCATENATED MODULE: ./node_modules/assert-is-function-x/dist/assert-is-function-x.esm.js
@@ -1742,14 +1795,16 @@ function toStringSymbolsSupported(value) {
  * @returns {*} Returns `callback` if it is function.
  */
 
-function assertIsFunction(callback) {
-  if (isFunction(callback) === false) {
-    var msg = is_primitive_default()(callback) ? toStringSymbolsSupported(callback) : '#<Object>';
+var assert_is_function_x_esm_assertIsFunction = function assertIsFunction(callback) {
+  if (is_function_x_esm(callback) === false) {
+    var msg = is_primitive_default()(callback) ? to_string_symbols_supported_x_esm(callback) : '#<Object>';
     throw new TypeError("".concat(msg, " is not a function"));
   }
 
   return callback;
-}
+};
+
+/* harmony default export */ var assert_is_function_x_esm = (assert_is_function_x_esm_assertIsFunction);
 
 
 // CONCATENATED MODULE: ./node_modules/has-boxed-string-x/dist/has-boxed-string-x.esm.js
@@ -1783,9 +1838,11 @@ var isStringFn = has_boxed_string_x_esm === false && typeof strSplit === 'functi
  *  otherwise the value.
  */
 
-function splitIfBoxedBug(value) {
+var splitIfBoxedBug = function splitIfBoxedBug(value) {
   return isStringFn && isStringFn(value) ? strSplit.call(value, split_if_boxed_bug_x_esm_EMPTY_STRING) : value;
-}
+};
+
+/* harmony default export */ var split_if_boxed_bug_x_esm = (splitIfBoxedBug);
 
 
 // CONCATENATED MODULE: ./node_modules/find-index-x/dist/find-index-x.esm.js
@@ -1805,7 +1862,7 @@ if (pFindIndex) {
   var testArr = [];
   testArr.length = 2;
   testArr[1] = 1;
-  var res = attempt.call(testArr, pFindIndex, function (item, idx) {
+  var res = attempt_x_esm.call(testArr, pFindIndex, function (item, idx) {
     find_index_x_esm_newArrowCheck(this, find_index_x_esm_this);
 
     return idx === 0;
@@ -1813,7 +1870,7 @@ if (pFindIndex) {
   isWorking = res.threw === false && res.value === 0;
 
   if (isWorking) {
-    res = attempt.call(1, pFindIndex, function (item, idx) {
+    res = attempt_x_esm.call(1, pFindIndex, function (item, idx) {
       find_index_x_esm_newArrowCheck(this, find_index_x_esm_this);
 
       return idx === 0;
@@ -1822,11 +1879,11 @@ if (pFindIndex) {
   }
 
   if (isWorking) {
-    isWorking = attempt.call([], pFindIndex).threw;
+    isWorking = attempt_x_esm.call([], pFindIndex).threw;
   }
 
   if (isWorking) {
-    res = attempt.call('abc', pFindIndex, function (item) {
+    res = attempt_x_esm.call('abc', pFindIndex, function (item) {
       find_index_x_esm_newArrowCheck(this, find_index_x_esm_this);
 
       return item === 'c';
@@ -1835,7 +1892,7 @@ if (pFindIndex) {
   }
 
   if (isWorking) {
-    res = attempt.call(function getArgs() {
+    res = attempt_x_esm.call(function getArgs() {
       /* eslint-disable-next-line prefer-rest-params */
       return arguments;
     }('a', 'b', 'c'), pFindIndex, function (item) {
@@ -1875,10 +1932,10 @@ if (isWorking) {
   };
 } else {
   findIdx = function findIndex(array, callback) {
-    var object = toObject(array);
-    assertIsFunction(callback);
-    var iterable = splitIfBoxedBug(object);
-    var length = toLength2018(iterable.length);
+    var object = to_object_x_esm(array);
+    assert_is_function_x_esm(callback);
+    var iterable = split_if_boxed_bug_x_esm(object);
+    var length = to_length_x_esm(iterable.length);
 
     if (length < 1) {
       return -1;
@@ -1919,15 +1976,17 @@ var fi = findIdx;
  * @returns {boolean} A Boolean indicating whether or not the given value is an integer.
  */
 
-function isInteger(value) {
-  return is_finite_x_esm_isFinite(value) && toInteger2018(value) === value;
-}
+var is_integer_x_esm_isInteger = function isInteger(value) {
+  return is_finite_x_esm(value) && to_integer_x_esm(value) === value;
+};
+
+/* harmony default export */ var is_integer_x_esm = (is_integer_x_esm_isInteger);
 
 
 // CONCATENATED MODULE: ./node_modules/is-safe-integer-x/dist/is-safe-integer-x.esm.js
 
-
-var MIN_SAFE_INTEGER = -max_safe_integer_default.a;
+var MAX_SAFE_INTEGER = 9007199254740991;
+var MIN_SAFE_INTEGER = -MAX_SAFE_INTEGER;
 /**
  * This method determines whether the passed value is a safe integer.
  *
@@ -1940,9 +1999,11 @@ var MIN_SAFE_INTEGER = -max_safe_integer_default.a;
  *  safe integer.
  */
 
-function isSafeInteger(value) {
-  return isInteger(value) && value >= MIN_SAFE_INTEGER && value <= max_safe_integer_default.a;
-}
+var is_safe_integer_x_esm_isSafeInteger = function isSafeInteger(value) {
+  return is_integer_x_esm(value) && value >= MIN_SAFE_INTEGER && value <= MAX_SAFE_INTEGER;
+};
+
+/* harmony default export */ var is_safe_integer_x_esm = (is_safe_integer_x_esm_isSafeInteger);
 
 
 // CONCATENATED MODULE: ./node_modules/is-length-x/dist/is-length-x.esm.js
@@ -1954,9 +2015,11 @@ function isSafeInteger(value) {
  * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
  */
 
-function isLength(value) {
-  return isSafeInteger(value) && value >= 0;
-}
+var is_length_x_esm_isLength = function isLength(value) {
+  return is_safe_integer_x_esm(value) && value >= 0;
+};
+
+/* harmony default export */ var is_length_x_esm = (is_length_x_esm_isLength);
 
 
 // CONCATENATED MODULE: ./node_modules/is-array-like-x/dist/is-array-like-x.esm.js
@@ -1971,9 +2034,11 @@ function isLength(value) {
  * @param {*} value - The object to be tested.
  */
 
-function isArrayLike(value) {
-  return isNil(value) === false && isFunction(value, true) === false && isLength(value.length);
-}
+var is_array_like_x_esm_isArrayLike = function isArrayLike(value) {
+  return is_nil_x_esm(value) === false && is_function_x_esm(value, true) === false && is_length_x_esm(value.length);
+};
+
+/* harmony default export */ var is_array_like_x_esm = (is_array_like_x_esm_isArrayLike);
 
 
 // CONCATENATED MODULE: ./node_modules/calculate-from-index-x/dist/calculate-from-index-x.esm.js
@@ -1996,20 +2061,21 @@ var getMax = function getMax(a, b) {
  */
 
 
-function calcFromIndex(array, fromIndex) {
-  var object = toObject(array);
+var calculate_from_index_x_esm_calcFromIndex = function calcFromIndex(array, fromIndex) {
+  var object = to_object_x_esm(array);
 
-  if (isArrayLike(object) === false) {
+  if (is_array_like_x_esm(object) === false) {
     return 0;
   }
 
-  var index = toInteger2018(fromIndex);
-  return index >= 0 ? index : getMax(0, toLength2018(object.length) + index);
-}
+  var index = to_integer_x_esm(fromIndex);
+  return index >= 0 ? index : getMax(0, to_length_x_esm(object.length) + index);
+};
+
+/* harmony default export */ var calculate_from_index_x_esm = (calculate_from_index_x_esm_calcFromIndex);
 
 
 // CONCATENATED MODULE: ./dist/index-of-x.esm.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return indexOf; });
 function index_of_x_esm_newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
 
 
@@ -2027,16 +2093,16 @@ var pIndexOf = typeof Array.prototype.indexOf === 'function' && Array.prototype.
 var index_of_x_esm_isWorking;
 
 if (pIndexOf) {
-  var index_of_x_esm_res = attempt.call([0, 1], pIndexOf, 1, 2);
+  var index_of_x_esm_res = attempt_x_esm.call([0, 1], pIndexOf, 1, 2);
   index_of_x_esm_isWorking = index_of_x_esm_res.threw === false && index_of_x_esm_res.value === -1;
 
   if (index_of_x_esm_isWorking) {
-    index_of_x_esm_res = attempt.call([0, 1], pIndexOf, 1);
+    index_of_x_esm_res = attempt_x_esm.call([0, 1], pIndexOf, 1);
     index_of_x_esm_isWorking = index_of_x_esm_res.threw === false && index_of_x_esm_res.value === 1;
   }
 
   if (index_of_x_esm_isWorking) {
-    index_of_x_esm_res = attempt.call([0, -0], pIndexOf, -0);
+    index_of_x_esm_res = attempt_x_esm.call([0, -0], pIndexOf, -0);
     index_of_x_esm_isWorking = index_of_x_esm_res.threw === false && index_of_x_esm_res.value === 0;
   }
 
@@ -2048,17 +2114,17 @@ if (pIndexOf) {
     index_of_x_esm_testArr[1] = void 0;
     /* eslint-disable-next-line no-void */
 
-    index_of_x_esm_res = attempt.call(index_of_x_esm_testArr, pIndexOf, void 0);
+    index_of_x_esm_res = attempt_x_esm.call(index_of_x_esm_testArr, pIndexOf, void 0);
     index_of_x_esm_isWorking = index_of_x_esm_res.threw === false && index_of_x_esm_res.value === 1;
   }
 
   if (index_of_x_esm_isWorking) {
-    index_of_x_esm_res = attempt.call('abc', pIndexOf, 'c');
+    index_of_x_esm_res = attempt_x_esm.call('abc', pIndexOf, 'c');
     index_of_x_esm_isWorking = index_of_x_esm_res.threw === false && index_of_x_esm_res.value === 2;
   }
 
   if (index_of_x_esm_isWorking) {
-    index_of_x_esm_res = attempt.call(function getArgs() {
+    index_of_x_esm_res = attempt_x_esm.call(function getArgs() {
       /* eslint-disable-next-line prefer-rest-params */
       return arguments;
     }('a', 'b', 'c'), pIndexOf, 'c');
@@ -2069,7 +2135,7 @@ if (pIndexOf) {
 if (index_of_x_esm_isWorking !== true) {
   pIndexOf = function $pIndexOf(searchElement) {
     /* eslint-disable-next-line babel/no-invalid-this */
-    var length = toLength2018(this.length);
+    var length = to_length_x_esm(this.length);
 
     if (length < 1) {
       return -1;
@@ -2106,7 +2172,7 @@ if (index_of_x_esm_isWorking !== true) {
 
 var findIdxFrom = function findIndexFrom(array, searchElement, fromIndex, extendFn) {
   var fIdx = fromIndex;
-  var length = toLength2018(array.length);
+  var length = to_length_x_esm(array.length);
 
   while (fIdx < length) {
     if (fIdx in array && extendFn(array[fIdx], searchElement)) {
@@ -2140,12 +2206,12 @@ var findIdxFrom = function findIndexFrom(array, searchElement, fromIndex, extend
 // eslint-enable jsdoc/check-param-names
 
 
-function indexOf(array, searchElement) {
+var index_of_x_esm_indexOf = function indexOf(array, searchElement) {
   var _this = this;
 
-  var object = toObject(array);
-  var iterable = splitIfBoxedBug(object);
-  var length = toLength2018(iterable.length);
+  var object = to_object_x_esm(array);
+  var iterable = split_if_boxed_bug_x_esm(object);
+  var length = to_length_x_esm(iterable.length);
 
   if (length < 1) {
     return -1;
@@ -2161,18 +2227,18 @@ function indexOf(array, searchElement) {
     extend = extend.toLowerCase();
 
     if (extend === 'samevalue') {
-      extendFn = sameValue;
+      extendFn = same_value_x_esm;
     } else if (extend === 'samevaluezero') {
-      extendFn = sameValueZero;
+      extendFn = same_value_zero_x_esm;
     }
   }
 
   var fromIndex = 0;
 
-  if (extendFn && (searchElement === 0 || is_nan_x_esm_isNaN(searchElement))) {
+  if (extendFn && (searchElement === 0 || is_nan_x_esm(searchElement))) {
     if (argLength > 3) {
       /* eslint-disable-next-line prefer-rest-params */
-      fromIndex = calcFromIndex(iterable, arguments[2]);
+      fromIndex = calculate_from_index_x_esm(iterable, arguments[2]);
 
       if (fromIndex >= length) {
         return -1;
@@ -2194,9 +2260,9 @@ function indexOf(array, searchElement) {
     }.bind(this));
   }
 
-  if (argLength > 3 || argLength > 2 && isFalsey(extendFn)) {
+  if (argLength > 3 || argLength > 2 && is_falsey_x_esm(extendFn)) {
     /* eslint-disable-next-line prefer-rest-params */
-    fromIndex = calcFromIndex(iterable, arguments[2]);
+    fromIndex = calculate_from_index_x_esm(iterable, arguments[2]);
 
     if (fromIndex >= length) {
       return -1;
@@ -2208,7 +2274,9 @@ function indexOf(array, searchElement) {
   }
 
   return pIndexOf.call(iterable, searchElement, fromIndex);
-}
+};
+
+/* harmony default export */ var index_of_x_esm = __webpack_exports__["default"] = (index_of_x_esm_indexOf);
 
 
 

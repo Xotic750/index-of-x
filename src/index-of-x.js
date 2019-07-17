@@ -125,7 +125,7 @@ const findIdxFrom = function findIndexFrom(array, searchElement, fromIndex, exte
  * @returns {number} Returns index of found element, otherwise -1.
  */
 // eslint-enable jsdoc/check-param-names
-export default function indexOf(array, searchElement) {
+const indexOf = function indexOf(array, searchElement) {
   const object = toObject(array);
   const iterable = splitIfBoxedBug(object);
   const length = toLength(iterable.length);
@@ -188,4 +188,6 @@ export default function indexOf(array, searchElement) {
   }
 
   return pIndexOf.call(iterable, searchElement, fromIndex);
-}
+};
+
+export default indexOf;

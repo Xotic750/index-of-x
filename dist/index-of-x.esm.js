@@ -128,7 +128,7 @@ var findIdxFrom = function findIndexFrom(array, searchElement, fromIndex, extend
 // eslint-enable jsdoc/check-param-names
 
 
-export default function indexOf(array, searchElement) {
+var indexOf = function indexOf(array, searchElement) {
   var _this = this;
 
   var object = toObject(array);
@@ -196,6 +196,8 @@ export default function indexOf(array, searchElement) {
   }
 
   return pIndexOf.call(iterable, searchElement, fromIndex);
-}
+};
+
+export default indexOf;
 
 //# sourceMappingURL=index-of-x.esm.js.map
