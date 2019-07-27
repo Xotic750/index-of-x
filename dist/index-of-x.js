@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2015-2017",
-  "date": "2019-07-27T14:50:51.062Z",
+  "date": "2019-07-27T19:06:22.839Z",
   "describe": "",
   "description": "An extended ES6 indexOf.",
   "file": "index-of-x.js",
-  "hash": "43f82d3672997c773bec",
+  "hash": "7d1cc8cd5279a009d7ea",
   "license": "MIT",
   "version": "3.0.16"
 }
@@ -1882,9 +1882,7 @@ function index_of_x_esm_newArrowCheck(innerThis, boundThis) { if (innerThis !== 
 
 
 
-/** @type {BooleanConstructor} */
 
-var index_of_x_esm_castBoolean = true.constructor;
 var pIndexOf = typeof Array.prototype.indexOf === 'function' && Array.prototype.indexOf;
 var index_of_x_esm_isWorking;
 
@@ -2056,7 +2054,7 @@ var index_of_x_esm_indexOf = function indexOf(array, searchElement) {
     }.bind(this));
   }
 
-  if (argLength > 3 || argLength > 2 && index_of_x_esm_castBoolean(extendFn) === false) {
+  if (argLength > 3 || argLength > 2 && to_boolean_x_esm(extendFn) === false) {
     /* eslint-disable-next-line prefer-rest-params */
     fromIndex = calculate_from_index_x_esm(iterable, arguments[2]);
 

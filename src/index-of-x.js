@@ -8,9 +8,8 @@ import findIndex from 'find-index-x';
 import calcFromIndex from 'calculate-from-index-x';
 import splitIfBoxedBug from 'split-if-boxed-bug-x';
 import attempt from 'attempt-x';
+import toBoolean from 'to-boolean-x';
 
-/** @type {BooleanConstructor} */
-const castBoolean = true.constructor;
 let pIndexOf = typeof Array.prototype.indexOf === 'function' && Array.prototype.indexOf;
 
 let isWorking;
@@ -175,7 +174,7 @@ const indexOf = function indexOf(array, searchElement) {
     });
   }
 
-  if (argLength > 3 || (argLength > 2 && castBoolean(extendFn) === false)) {
+  if (argLength > 3 || (argLength > 2 && toBoolean(extendFn) === false)) {
     /* eslint-disable-next-line prefer-rest-params */
     fromIndex = calcFromIndex(iterable, arguments[2]);
 
