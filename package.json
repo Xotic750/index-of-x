@@ -1,6 +1,6 @@
 {
   "name": "index-of-x",
-  "version": "3.0.17",
+  "version": "3.0.18",
   "description": "An extended ES6 indexOf.",
   "homepage": "https://github.com/Xotic750/index-of-x",
   "author": {
@@ -52,12 +52,12 @@
   },
   "dependencies": {
     "attempt-x": "^2.0.23",
-    "calculate-from-index-x": "^3.0.18",
+    "calculate-from-index-x": "^3.0.19",
     "find-index-x": "^3.0.17",
     "is-nan-x": "^2.0.30",
     "is-string": "^1.0.4",
     "same-value-x": "^2.0.29",
-    "same-value-zero-x": "^2.0.29",
+    "same-value-zero-x": "^2.0.30",
     "split-if-boxed-bug-x": "^2.0.23",
     "to-boolean-x": "^2.0.25",
     "to-length-x": "^4.0.26",
