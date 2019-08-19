@@ -198,7 +198,7 @@ const itHasDoc = typeof document !== 'undefined' && document ? it : xit;
 
       it('should work with strings', function() {
         expect.assertions(1);
-        expect(indexOf('abc', 'b')).toBe(1);
+        expect(indexOf('abcdbca', 'b')).toBe(1);
       });
 
       it('should work with arguments', function() {
