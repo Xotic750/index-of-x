@@ -1,7 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`indexOf should throw when target is null or undefined 1`] = `"Cannot call method on undefined"`;
+exports[`indexOf 0 should throw when target is null or undefined 1`] = `"Cannot call method on undefined"`;
 
-exports[`indexOf should throw when target is null or undefined 2`] = `"Cannot call method on undefined"`;
+exports[`indexOf 0 should throw when target is null or undefined 2`] = `"Cannot call method on undefined"`;
 
-exports[`indexOf should throw when target is null or undefined 3`] = `"Cannot call method on null"`;
+exports[`indexOf 0 should throw when target is null or undefined 3`] = `"Cannot call method on null"`;
+
+exports[`indexOf 1 should throw when target is null or undefined 1`] = `"Cannot call method on undefined"`;
+
+exports[`indexOf 1 should throw when target is null or undefined 2`] = `"Cannot call method on undefined"`;
+
+exports[`indexOf 1 should throw when target is null or undefined 3`] = `"Cannot call method on null"`;

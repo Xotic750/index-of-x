@@ -9,76 +9,90 @@ import calcFromIndex from 'calculate-from-index-x';
 import splitIfBoxedBug from 'split-if-boxed-bug-x';
 import attempt from 'attempt-x';
 import toBoolean from 'to-boolean-x';
+import methodize from 'simple-methodize-x';
+import toInteger from 'to-integer-x';
 
-let pIndexOf = typeof Array.prototype.indexOf === 'function' && Array.prototype.indexOf;
+const nio = [].indexOf;
+const nativeIndexOf = typeof nio === 'function' && methodize(nio);
+const {max: mathMax} = Math;
 
-let isWorking;
+const test1 = function test1() {
+  const res = attempt(nativeIndexOf, [0, 1], 1, 2);
 
-if (pIndexOf) {
-  let res = attempt.call([0, 1], pIndexOf, 1, 2);
-  isWorking = res.threw === false && res.value === -1;
+  return res.threw === false && res.value === -1;
+};
 
-  if (isWorking) {
-    res = attempt.call([0, 1], pIndexOf, 1);
-    isWorking = res.threw === false && res.value === 1;
-  }
+const test2 = function test2() {
+  const res = attempt(nativeIndexOf, [0, 1], 1);
 
-  if (isWorking) {
-    res = attempt.call([0, -0], pIndexOf, -0);
-    isWorking = res.threw === false && res.value === 0;
-  }
+  return res.threw === false && res.value === 1;
+};
 
-  if (isWorking) {
-    const testArr = [];
-    testArr.length = 2;
-    /* eslint-disable-next-line no-void */
-    testArr[1] = void 0;
-    /* eslint-disable-next-line no-void */
-    res = attempt.call(testArr, pIndexOf, void 0);
-    isWorking = res.threw === false && res.value === 1;
-  }
+const test3 = function test3() {
+  const res = attempt(nativeIndexOf, [0, -0], -0);
 
-  if (isWorking) {
-    res = attempt.call('abc', pIndexOf, 'c');
-    isWorking = res.threw === false && res.value === 2;
-  }
+  return res.threw === false && res.value === 0;
+};
 
-  if (isWorking) {
-    res = attempt.call(
-      (function getArgs() {
-        /* eslint-disable-next-line prefer-rest-params */
-        return arguments;
-      })('a', 'b', 'c'),
-      pIndexOf,
-      'c',
-    );
-    isWorking = res.threw === false && res.value === 2;
-  }
-}
+const test4 = function test4() {
+  const testArr = [];
+  testArr.length = 2;
+  /* eslint-disable-next-line no-void */
+  testArr[1] = void 0;
+  /* eslint-disable-next-line no-void */
+  const res = attempt(nativeIndexOf, testArr, void 0);
 
-if (isWorking !== true) {
-  pIndexOf = function $pIndexOf(searchElement) {
-    /* eslint-disable-next-line babel/no-invalid-this */
-    const length = toLength(this.length);
+  return res.threw === false && res.value === 1;
+};
 
-    if (length < 1) {
-      return -1;
-    }
+const test5 = function test5() {
+  const res = attempt(nativeIndexOf, 'abc', 'c');
 
+  return res.threw === false && res.value === 2;
+};
+
+const test6 = function test6() {
+  const args = (function getArgs() {
     /* eslint-disable-next-line prefer-rest-params */
-    let i = arguments[1];
-    while (i < length) {
-      /* eslint-disable-next-line babel/no-invalid-this */
-      if (i in this && this[i] === searchElement) {
-        return i;
-      }
+    return arguments;
+  })('a', 'b', 'c');
 
-      i += 1;
-    }
+  const res = attempt(nativeIndexOf, args, 'c');
 
+  return res.threw === false && res.value === 2;
+};
+
+const isWorking = toBoolean(nativeIndexOf) && test1() && test2() && test3() && test4() && test5() && test6();
+
+export const implementation = function indexOf(array, searchElement) {
+  const object = toObject(array);
+  // If no callback function or if callback is not a callable function
+  const iterable = splitIfBoxedBug(object);
+  const length = toLength(iterable.length);
+
+  if (length === 0) {
     return -1;
-  };
-}
+  }
+
+  let i = 0;
+
+  if (arguments.length > 2) {
+    /* eslint-disable-next-line prefer-rest-params */
+    i = toInteger(arguments[2]);
+  }
+
+  // handle negative indices
+  i = i >= 0 ? i : mathMax(0, length + i);
+  for (; i < length; i += 1) {
+    if (i in iterable && iterable[i] === searchElement) {
+      return i;
+    }
+  }
+
+  return -1;
+};
+
+const pIndexOf = isWorking ? nativeIndexOf : implementation;
 
 /**
  * This method returns an index in the array, if an element in the array
@@ -187,7 +201,7 @@ const indexOf = function indexOf(array, searchElement) {
     }
   }
 
-  return pIndexOf.call(iterable, searchElement, fromIndex);
+  return pIndexOf(iterable, searchElement, fromIndex);
 };
 
 export default indexOf;

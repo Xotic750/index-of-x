@@ -11,74 +11,84 @@ import calcFromIndex from 'calculate-from-index-x';
 import splitIfBoxedBug from 'split-if-boxed-bug-x';
 import attempt from 'attempt-x';
 import toBoolean from 'to-boolean-x';
-var pIndexOf = typeof Array.prototype.indexOf === 'function' && Array.prototype.indexOf;
-var isWorking;
+import methodize from 'simple-methodize-x';
+import toInteger from 'to-integer-x';
+var nio = [].indexOf;
+var nativeIndexOf = typeof nio === 'function' && methodize(nio);
+var mathMax = Math.max;
 
-if (pIndexOf) {
-  var res = attempt.call([0, 1], pIndexOf, 1, 2);
-  isWorking = res.threw === false && res.value === -1;
+var test1 = function test1() {
+  var res = attempt(nativeIndexOf, [0, 1], 1, 2);
+  return res.threw === false && res.value === -1;
+};
 
-  if (isWorking) {
-    res = attempt.call([0, 1], pIndexOf, 1);
-    isWorking = res.threw === false && res.value === 1;
-  }
+var test2 = function test2() {
+  var res = attempt(nativeIndexOf, [0, 1], 1);
+  return res.threw === false && res.value === 1;
+};
 
-  if (isWorking) {
-    res = attempt.call([0, -0], pIndexOf, -0);
-    isWorking = res.threw === false && res.value === 0;
-  }
+var test3 = function test3() {
+  var res = attempt(nativeIndexOf, [0, -0], -0);
+  return res.threw === false && res.value === 0;
+};
 
-  if (isWorking) {
-    var testArr = [];
-    testArr.length = 2;
-    /* eslint-disable-next-line no-void */
+var test4 = function test4() {
+  var testArr = [];
+  testArr.length = 2;
+  /* eslint-disable-next-line no-void */
 
-    testArr[1] = void 0;
-    /* eslint-disable-next-line no-void */
+  testArr[1] = void 0;
+  /* eslint-disable-next-line no-void */
 
-    res = attempt.call(testArr, pIndexOf, void 0);
-    isWorking = res.threw === false && res.value === 1;
-  }
+  var res = attempt(nativeIndexOf, testArr, void 0);
+  return res.threw === false && res.value === 1;
+};
 
-  if (isWorking) {
-    res = attempt.call('abc', pIndexOf, 'c');
-    isWorking = res.threw === false && res.value === 2;
-  }
+var test5 = function test5() {
+  var res = attempt(nativeIndexOf, 'abc', 'c');
+  return res.threw === false && res.value === 2;
+};
 
-  if (isWorking) {
-    res = attempt.call(function getArgs() {
-      /* eslint-disable-next-line prefer-rest-params */
-      return arguments;
-    }('a', 'b', 'c'), pIndexOf, 'c');
-    isWorking = res.threw === false && res.value === 2;
-  }
-}
-
-if (isWorking !== true) {
-  pIndexOf = function $pIndexOf(searchElement) {
-    /* eslint-disable-next-line babel/no-invalid-this */
-    var length = toLength(this.length);
-
-    if (length < 1) {
-      return -1;
-    }
+var test6 = function test6() {
+  var args = function getArgs() {
     /* eslint-disable-next-line prefer-rest-params */
+    return arguments;
+  }('a', 'b', 'c');
 
+  var res = attempt(nativeIndexOf, args, 'c');
+  return res.threw === false && res.value === 2;
+};
 
-    var i = arguments[1];
+var isWorking = toBoolean(nativeIndexOf) && test1() && test2() && test3() && test4() && test5() && test6();
+export var implementation = function indexOf(array, searchElement) {
+  var object = toObject(array); // If no callback function or if callback is not a callable function
 
-    while (i < length) {
-      /* eslint-disable-next-line babel/no-invalid-this */
-      if (i in this && this[i] === searchElement) {
-        return i;
-      }
+  var iterable = splitIfBoxedBug(object);
+  var length = toLength(iterable.length);
 
-      i += 1;
-    }
-
+  if (length === 0) {
     return -1;
-  };
-}
+  }
+
+  var i = 0;
+
+  if (arguments.length > 2) {
+    /* eslint-disable-next-line prefer-rest-params */
+    i = toInteger(arguments[2]);
+  } // handle negative indices
+
+
+  i = i >= 0 ? i : mathMax(0, length + i);
+
+  for (; i < length; i += 1) {
+    if (i in iterable && iterable[i] === searchElement) {
+      return i;
+    }
+  }
+
+  return -1;
+};
+var pIndexOf = isWorking ? nativeIndexOf : implementation;
 /**
  * This method returns an index in the array, if an element in the array
  * satisfies the provided testing function. Otherwise -1 is returned.
@@ -90,7 +100,6 @@ if (isWorking !== true) {
  * @param {Function} extendFn - The comparison function to use.
  * @returns {number} Returns index of found element, otherwise -1.
  */
-
 
 var findIdxFrom = function findIndexFrom(array, searchElement, fromIndex, extendFn) {
   var fIdx = fromIndex;
@@ -195,7 +204,7 @@ var indexOf = function indexOf(array, searchElement) {
     }
   }
 
-  return pIndexOf.call(iterable, searchElement, fromIndex);
+  return pIndexOf(iterable, searchElement, fromIndex);
 };
 
 export default indexOf;
