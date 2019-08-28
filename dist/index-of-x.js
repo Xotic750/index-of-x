@@ -2,13 +2,13 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2015-2017",
-  "date": "2019-08-28T15:40:58.312Z",
+  "date": "2019-08-28T17:41:29.759Z",
   "describe": "",
   "description": "An extended ES6 indexOf.",
   "file": "index-of-x.js",
   "hash": "48a3ec916eb27190787a",
   "license": "MIT",
-  "version": "3.1.1"
+  "version": "3.1.2"
 }
 */
 (function webpackUniversalModuleDefinition(root, factory) {
