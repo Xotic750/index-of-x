@@ -2,7 +2,7 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2015-2017",
-  "date": "2019-09-05T19:58:32.961Z",
+  "date": "2020-01-30T22:43:55.663Z",
   "describe": "",
   "description": "An extended ES6 indexOf.",
   "file": "index-of-x.js",
